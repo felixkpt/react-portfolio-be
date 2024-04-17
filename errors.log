@@ -1,0 +1,32 @@
+2024/03/25 10:02:04 [error] 1110#1110: *1829 FastCGI sent in stderr: "PHP message: PHP Fatal error:  During class fetch: Uncaught ErrorException: include(/var/www/html/react-portfolio-be/vendor/composer/../../app/Models/CommonModelRelationShips.php): Failed to open stream: No such file or directory in /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php:576
+Stack trace:
+#0 /var/www/html/react-portfolio-be/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(255): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): include('...')
+#3 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#4 /var/www/html/react-portfolio-be/app/Models/User.php(15): Composer\Autoload\ClassLoader->loadClass()
+#5 /var/www/html/react-portfolio-be/vendor/c" while reading response header from upstream, client: 127.0.0.1, server: react-portfolio-be.local, request: "GET /api/auth/user?verify=1 HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.1-fpm.sock:", host: "react-portfolio-be.local", referrer: "http://localhost:5173/"
+2024/03/25 10:02:04 [error] 1110#1110: *1830 FastCGI sent in stderr: "PHP message: PHP Fatal error:  During class fetch: Uncaught ErrorException: include(/var/www/html/react-portfolio-be/vendor/composer/../../app/Models/CommonModelRelationShips.php): Failed to open stream: No such file or directory in /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php:576
+Stack trace:
+#0 /var/www/html/react-portfolio-be/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(255): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): include('...')
+#3 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#4 /var/www/html/react-portfolio-be/app/Models/Role.php(8): Composer\Autoload\ClassLoader->loadClass()
+#5 /var/www/html/react-portfolio-be/vendor/co" while reading response header from upstream, client: 127.0.0.1, server: react-portfolio-be.local, request: "GET /api/admin/settings/role-permissions/roles/get-user-roles-and-direct-permissions HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.1-fpm.sock:", host: "react-portfolio-be.local", referrer: "http://localhost:5173/"
+2024/03/25 10:02:09 [error] 1110#1110: *1830 FastCGI sent in stderr: "PHP message: PHP Fatal error:  During class fetch: Uncaught ErrorException: include(/var/www/html/react-portfolio-be/vendor/composer/../../app/Models/CommonModelRelationShips.php): Failed to open stream: No such file or directory in /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php:576
+Stack trace:
+#0 /var/www/html/react-portfolio-be/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(255): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): include('...')
+#3 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#4 /var/www/html/react-portfolio-be/app/Models/User.php(15): Composer\Autoload\ClassLoader->loadClass()
+#5 /var/www/html/react-portfolio-be/vendor/c" while reading response header from upstream, client: 127.0.0.1, server: react-portfolio-be.local, request: "POST /api/auth/login HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.1-fpm.sock:", host: "react-portfolio-be.local", referrer: "http://localhost:5173/"
+2024/03/25 10:02:32 [error] 1110#1110: *1830 FastCGI sent in stderr: "PHP message: PHP Fatal error:  During class fetch: Uncaught ErrorException: include(/var/www/html/react-portfolio-be/vendor/composer/../../app/Models/CommonModelRelationShips.php): Failed to open stream: No such file or directory in /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php:576
+Stack trace:
+#0 /var/www/html/react-portfolio-be/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(255): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(576): include('...')
+#3 /var/www/html/react-portfolio-be/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#4 /var/www/html/react-portfolio-be/app/Models/User.php(15): Composer\Autoload\ClassLoader->loadClass()
+#5 /var/www/html/react-portfolio-be/vendor/c" while reading response header from upstream, client: 127.0.0.1, server: react-portfolio-be.local, request: "POST /api/auth/login HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.1-fpm.sock:", host: "react-portfolio-be.local", referrer: "http://localhost:5173/"
