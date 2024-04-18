@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -155,7 +156,13 @@ class AuthController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        Mail::send('emails.forgetPassword', ['token' => $token], function ($message) use ($request) {
+        // Extract frontend URL from the request headers
+        $frontendUrl = $request->header('X-Frontend-URL');
+        Log::info('frontendUrl', [$frontendUrl]);
+
+        $reset_password_url = $frontendUrl . '/password-set/' . $token;
+
+        Mail::send('emails.forgetPassword', ['reset_password_url' => $reset_password_url], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Reset Password');
         });
