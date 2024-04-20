@@ -201,7 +201,7 @@ class RoleRepository implements RoleRepositoryInterface
 
         $jsonContent = file_get_contents(Storage::path($filePath));
 
-        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'nested_routes_folder' => config('nestedroutes.folder')]]);
+        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => [config('nestedroutes.folder'), 'dashboard']]]);
     }
 
     function getUserRoutePermissions($id)

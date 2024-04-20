@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Qualification extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
         'institution',
@@ -15,7 +15,7 @@ class Qualification extends Model
         'qualification',
         'start_date',
         'end_date',
-        "featured_image",
+        "image",
         'importance',
         'user_id',
         "status",

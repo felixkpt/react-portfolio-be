@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
         "title",
@@ -16,7 +16,7 @@ class Post extends Model
         "content_short",
         "source_uri",
         "comment_disabled",
-        "featured_image",
+        "image",
         "status",
         "display_time",
         "importance",

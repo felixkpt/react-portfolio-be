@@ -171,7 +171,7 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         App\Services\Filerepo\FileRepoProvider::class,
         App\Providers\ValidationServiceProvider::class,
-        Felixkpt\Nestedroutes\Providers\NestedRoutesBindingServiceProvider::class,
+        Felixkpt\Nestedroutes\Providers\NestedroutesServiceProvider::class,
     ])->toArray(),
 
     /*

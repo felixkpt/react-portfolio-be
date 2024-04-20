@@ -6,4 +6,4 @@ use Illuminate\Support\Facades\Route;
 $controller = AboutController::class;
 
 Route::get('/', [$controller, 'index'])->name('About')->everyone(true);
-Route::any('/update-or-create', [$controller, 'store'])->name('Update about');
+Route::any('/create-or-update', [$controller, 'store'])->name('Modify  About')->hidden();

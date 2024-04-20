@@ -11,7 +11,7 @@ class SkillsCategory extends Model
 
     protected $fillable = [
         "name",
-        "featured_image",
+        "image",
         "importance",
         "user_id",
         "status"

@@ -132,7 +132,7 @@ class ProjectsController extends Controller
                         '_id',
                         'title',
                         'slug',
-                        'featured_image',
+                        'image',
                         'start_date',
                         'end_date',
                         'status',

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
         'type',

@@ -34,20 +34,18 @@ class AboutController extends Controller
     public function store()
     {
 
-        Log::info('fn wass hit');
-
         request()->validate([
-            'salutation' => 'nullable|string',
-            'name' => 'required|unique:about,name,' . request()->id . ',_id',
-            'content' => 'required|',
-            'content_short' => 'required|string',
+            'current_title' => 'nullable|string',
+            'name' => 'required|unique:about,name,' . request()->id,
+            'slogan' => 'nullable',
+            'content' => 'required|string',
         ]);
 
         $data = \request()->all();
 
         $data['slug'] = Str::slug($data['name']);
         if (!isset($data['user_id'])) {
-            if (Schema::hasColumn('companies', 'user_id'))
+            if (Schema::hasColumn('about', 'user_id'))
                 $data['user_id'] = currentUser()->id;
         }
 
@@ -58,7 +56,8 @@ class AboutController extends Controller
             $data['status'] = 'published';
         }
 
-        About::updateOrCreate(['_id' => request()->id ?? str()->random(20)], $data);
+        
+        About::updateOrCreate(['id' => request()->id ?? str()->random(20)], $data);
 
         return response(['type' => 'success', 'message' => 'About ' . $action . ' successfully']);
     }

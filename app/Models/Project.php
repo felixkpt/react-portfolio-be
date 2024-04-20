@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
+    
     protected $fillable = [
         "title",
         "slug",
@@ -15,7 +16,7 @@ class Project extends Model
         "content_short",
         "source_uri",
         "comment_disabled",
-        "featured_image",
+        "image",
         "status",
         "display_time",
         "importance",

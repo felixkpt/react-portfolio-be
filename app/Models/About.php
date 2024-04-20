@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class About extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
 
     protected $table = 'about';
     
     protected $fillable = [
-        "salutation",
+        "current_title",
         "name",
         "slug",
         "slogan",
         "content",
         "content_short",
-        "featured_image",
+        "image",
         "user_id",
         "status",
     ];
