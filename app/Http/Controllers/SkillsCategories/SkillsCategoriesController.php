@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\SkillsCategories;
 
+use App\Http\Controllers\CommonControllerMethods;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Schema;
-use App\Http\Traits\ControllerTrait;
 use App\Models\SkillsCategory;
-use Carbon\Carbon;
 
 class SkillsCategoriesController extends Controller
 {
@@ -15,7 +14,7 @@ class SkillsCategoriesController extends Controller
     /**
      *  Controller Trait
      */
-    use ControllerTrait;
+    use CommonControllerMethods;
 
     /**
      * return skills's index view
@@ -27,7 +26,7 @@ class SkillsCategoriesController extends Controller
 
         $skills = SkillsCategory::with('user')->paginate();
 
-        return response(['message' => 'success', 'data' => $skills]);
+        return response(['results' => $skills]);
     }
 
     /**
@@ -37,7 +36,10 @@ class SkillsCategoriesController extends Controller
     {
 
         request()->validate([
-            'name' => 'required|unique:skills_categories,name,' . request()->id . ',_id',
+            'name' => 'required|unique:skills_categories,name,' . request()->id,
+            'start_date' => 'required|date',
+            'experience_level_id' => 'required|exists:experience_levels,id',
+            'skills_category_id' => 'required|exists:skills_categories,id',
         ]);
 
         $data = \request()->all();
@@ -69,26 +71,5 @@ class SkillsCategoriesController extends Controller
 
         $res = SkillsCategory::find($id);
         return response(['type' => 'success', 'message' => 'successfully', 'data' => $res], 200);
-    }
-    /**
-     * toggle skills status
-     */
-    public function changeStatus($id)
-    {
-        $skill = SkillsCategory::findOrFail($id);
-        $state = $skill->status == 1 ? 'Deactivated' : 'Activated';
-        $skill->status = $skill->status == 1 ? 0 : 1;
-        $skill->save();
-        return response(['type' => 'success', 'message' => 'SkillsCategory #' . $skill->id . ' has been ' . $state]);
-    }
-
-    /**
-     * delete skills
-     */
-    public function destroySkillsCategory($id)
-    {
-        $skill = SkillsCategory::findOrFail($id);
-        $skill->delete();
-        return redirect()->back()->with('notice', ['type' => 'success', 'message' => 'SkillsCategory deleted successfully']);
     }
 }

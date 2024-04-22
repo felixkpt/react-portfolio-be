@@ -16,7 +16,7 @@ trait CommonRepoActions
         $data['id'] = $id;
 
         if (!$id) {
-            $data['user_id'] = auth()->user()->id;
+            $data['user_id'] = auth()->user()->id ?? 0;
 
             if (!isset($data['status_id'])) {
                 $data['status_id'] = activeStatusId();

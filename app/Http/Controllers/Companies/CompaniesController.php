@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Companies;
 
+use App\Http\Controllers\CommonControllerMethods;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -18,19 +19,17 @@ class CompaniesController extends Controller
     /**
      *  Controller Trait
      */
-    use ControllerTrait;
+    use CommonControllerMethods;
 
     /**
      * return company's index view
      */
     public function index()
     {
-        if (request()->all == 1)
-            return Company::where('status', 1)->orWhereNull('status')->get();
+        $company = Company::query();
+        $results = SearchRepo::of($company)->paginate();
 
-        $company = Company::with('user')->paginate();
-
-        return response(['message' => 'success', 'data' => $company]);
+        return response(['results' => $results]);
     }
 
     /**
@@ -77,27 +76,5 @@ class CompaniesController extends Controller
     function update()
     {
         return $this->store(true);
-    }
-
-    /**
-     * toggle company status
-     */
-    public function changeStatus($id)
-    {
-        $company = Company::findOrFail($id);
-        $state = $company->status == 1 ? 'Deactivated' : 'Activated';
-        $company->status = $company->status == 1 ? 0 : 1;
-        $company->save();
-        return response(['type' => 'success', 'message' => 'Company #' . $company->id . ' has been ' . $state]);
-    }
-
-    /**
-     * delete company
-     */
-    public function destroy($id)
-    {
-        $company = Company::findOrFail($id);
-        $company->delete();
-        return redirect()->back()->with('notice', ['type' => 'success', 'message' => 'Company deleted successfully']);
     }
 }

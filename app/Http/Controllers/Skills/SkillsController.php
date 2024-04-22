@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Skills;
 
+use App\Http\Controllers\CommonControllerMethods;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Schema;
-use App\Http\Traits\ControllerTrait;
 use App\Models\Skill;
 use Carbon\Carbon;
 
@@ -16,7 +15,7 @@ class SkillsController extends Controller
     /**
      *  Controller Trait
      */
-    use ControllerTrait;
+    use CommonControllerMethods;
 
     /**
      * return skills's index view
@@ -28,7 +27,7 @@ class SkillsController extends Controller
 
         $skills = Skill::with(['user', 'skillCategory'])->paginate();
 
-        return response(['message' => 'success', 'data' => $skills]);
+        return response(['results' => $skills]);
     }
 
     /**
@@ -74,26 +73,5 @@ class SkillsController extends Controller
 
         $res = Skill::find($id);
         return response(['type' => 'success', 'message' => 'successfully', 'data' => $res], 200);
-    }
-    /**
-     * toggle skills status
-     */
-    public function changeStatus($id)
-    {
-        $skill = Skill::findOrFail($id);
-        $state = $skill->status == 1 ? 'Deactivated' : 'Activated';
-        $skill->status = $skill->status == 1 ? 0 : 1;
-        $skill->save();
-        return response(['type' => 'success', 'message' => 'Skill #' . $skill->id . ' has been ' . $state]);
-    }
-
-    /**
-     * delete skills
-     */
-    public function destroySkill($id)
-    {
-        $skill = Skill::findOrFail($id);
-        $skill->delete();
-        return redirect()->back()->with('notice', ['type' => 'success', 'message' => 'Skill deleted successfully']);
     }
 }

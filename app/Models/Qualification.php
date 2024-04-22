@@ -18,7 +18,7 @@ class Qualification extends Model
         "image",
         'importance',
         'user_id',
-        "status",
+        "status_id",
     ];
 
     function user()

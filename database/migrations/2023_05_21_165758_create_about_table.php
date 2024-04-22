@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string("slogan")->nullable();
             $table->longText("content");
             $table->string("image")->nullable();
-            $table->string("status")->default('published')->nullable();
-            $table->unsignedBigInteger("user_id");
+
+            $table->unsignedBigInteger('status_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();
         });
     }

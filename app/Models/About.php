@@ -20,7 +20,7 @@ class About extends Model
         "content_short",
         "image",
         "user_id",
-        "status",
+        "status_id",
     ];
 
     function user()

@@ -6,10 +6,6 @@ use Illuminate\Http\Request;
 
 trait CommonControllerMethods
 {
-    /**
-     * The current subject repository.
-     */
-    protected $repo;
 
     function update(Request $request, $id)
     {

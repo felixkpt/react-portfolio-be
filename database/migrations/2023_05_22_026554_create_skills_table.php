@@ -17,11 +17,12 @@ return new class extends Migration
             $table->bigIncrements('id')->startingValue(1100);
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->string('start_date');
-            $table->string('level');
+            $table->date('start_date');
+            $table->string('experience_level_id');
             $table->unsignedBigInteger('skills_category_id');
             $table->string('logo')->nullable();
             $table->unsignedTinyInteger("importance")->default(0);
+            
             $table->unsignedBigInteger('user_id');
             $table->unsignedTinyInteger("status")->default(1);
             $table->timestamps();

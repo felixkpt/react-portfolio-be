@@ -26,7 +26,18 @@ class AdminRoleSeeder extends Seeder
                 'name' => 'Super Admin',
                 'guard_name' => 'api',
                 'user_id' => User::first()->id,
-                'status_id' => Status::where('name', 'active')->first()->id ?? 0
+                'status_id' => activeStatusId()
+            ]
+        );
+
+        // Guest role
+        Role::updateOrCreate(
+            ['name' => 'Guest'],
+            [
+                'name' => 'Guest',
+                'guard_name' => 'api',
+                'user_id' => User::first()->id,
+                'status_id' => activeStatusId()
             ]
         );
 
@@ -36,7 +47,7 @@ class AdminRoleSeeder extends Seeder
             $user->default_role_id = $role->id;
             $user->save();
         } catch (Exception $e) {
-            dd('User assignRole error: ', $e->getMessage().'. Also, please ensure config > auth.php > guards > api key exists.');
+            dd('User assignRole error: ', $e->getMessage() . '. Also, please ensure config > auth.php > guards > api key exists.');
         }
 
         if ($role_counts === 0) {

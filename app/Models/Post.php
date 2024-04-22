@@ -17,7 +17,7 @@ class Post extends Model
         "source_uri",
         "comment_disabled",
         "image",
-        "status",
+        "status_id",
         "display_time",
         "importance",
         "user_id"

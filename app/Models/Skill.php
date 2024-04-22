@@ -17,7 +17,7 @@ class Skill extends Model
         "logo",
         "importance",
         "user_id",
-        "status",
+        "status_id",
     ];
 
     function user()

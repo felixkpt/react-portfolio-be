@@ -7,12 +7,12 @@ use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Nested Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register Admin routes for your application. These
+| Here is where you can register Nested routes for your application. These
 | routes are loaded by the NesetedRouteServiceProvider within a group which
-| is assigned the "web" middleware group. Enjoy building your Admin!
+| can be assigned the "web" or "api" middleware group. Enjoy building your App!
 |
 */
 
@@ -23,7 +23,6 @@ $prefix = 'api';
 $middleWares = [];
 $middleWares[] = 'api';
 $middleWares[] = 'nestedroutes.auth';
-$middleWares[] = 'auth:sanctum';
 
 Route::middleware(array_filter(array_merge($middleWares, [])))
     ->prefix($prefix)

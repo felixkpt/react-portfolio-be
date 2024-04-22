@@ -16,7 +16,7 @@ class Company extends Model
         'start_date',
         'end_date',
         "user_id",
-        "status",
+        "status_id",
     ];
 
     function user()

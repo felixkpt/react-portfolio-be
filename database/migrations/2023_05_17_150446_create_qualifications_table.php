@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('institution');
             $table->string('course');
             $table->string('qualification');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('image')->nullable();
             $table->unsignedTinyInteger("importance")->default(0);
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedTinyInteger("status")->default(1);
+         
+            $table->unsignedBigInteger('status_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();
            
         });

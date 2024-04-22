@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('position');
             $table->text('roles');
-            $table->string('start_date');
-            $table->string('end_date')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->string('logo');
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedTinyInteger("status")->default(1);
             $table->timestamps();

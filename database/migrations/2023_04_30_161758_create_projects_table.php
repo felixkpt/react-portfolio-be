@@ -23,15 +23,16 @@ return new class extends Migration
             $table->string("source_uri")->nullable();
             $table->boolean("comment_disabled")->default(0)->nullable();
             $table->string("image")->nullable();
-            $table->string("status")->default('published')->nullable();
             $table->dateTime("display_time")->nullable();
             $table->unsignedTinyInteger("importance")->default(0);
-            $table->unsignedBigInteger("user_id");
             $table->string("project_url")->nullable();
             $table->string("github_url")->nullable();
             $table->unsignedBigInteger("company_id");
-            $table->string("start_date");
-            $table->string("end_date")->nullable();
+            $table->date("start_date");
+            $table->date("end_date")->nullable();
+
+            $table->unsignedBigInteger('status_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();
         });
     }
