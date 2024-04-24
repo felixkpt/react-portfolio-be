@@ -1,5 +1,6 @@
 <?php
 
+use Felixkpt\Nestedroutes\Http\Middleware\NestedroutesAuthMiddleware;
 use Felixkpt\Nestedroutes\RoutesHelper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +19,13 @@ use Illuminate\Support\Str;
 
 $nested_routes_folder = config('nestedroutes.folder');
 // Prefix all generated routes
-$prefix = 'api';
+$prefix = config('nestedroutes.prefix') ?? 'api';
 // Middlewares to be passed before accessing any route
-$middleWares = [];
-$middleWares[] = 'api';
-$middleWares[] = 'nestedroutes.auth';
+$middleWares = config('nestedroutes.middleWares');
+$middleWares = [NestedroutesAuthMiddleware::class];
+$middleWares = $middleWares && count($middleWares) > 0 ? $middleWares : 'api';
 
-Route::middleware(array_filter(array_merge($middleWares, [])))
+Route::middleware($middleWares)
     ->prefix($prefix)
     ->group(function () use ($nested_routes_folder) {
 
@@ -35,7 +36,7 @@ Route::middleware(array_filter(array_merge($middleWares, [])))
                 $filename = $file->getFileName();
                 return !Str::is($filename, 'driver.php') && !Str::is($filename, 'auth.route.php') && Str::endsWith($filename, '.route.php');
             });
-            
+
             foreach ($route_files as $file) {
 
                 $res = (new RoutesHelper(''))->handle($file);
@@ -49,6 +50,5 @@ Route::middleware(array_filter(array_merge($middleWares, [])))
             }
         }
     });
-
 
 require 'auth.route.php';

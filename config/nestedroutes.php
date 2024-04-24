@@ -11,6 +11,8 @@ return [
     |
     */
     'folder' => 'nested-routes',
+    'prefix' => 'api',
+    'middleWares' => ['api', 'nesteroutes.auth'],
     'permissions' => [
         'ignored_folders' => env('permissions_ignored_folders', [
             'auth',
@@ -19,7 +21,8 @@ return [
     ],
 
     'rename_main_folders' => [
-        'admin' => 'dashboard'
-    ]
+        'admin' => 'dashboard',
+    ],
+    'guestRoleId' => 1101,
 
 ];
