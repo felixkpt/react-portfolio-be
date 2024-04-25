@@ -16,7 +16,7 @@ trait CommonRepoActions
         $data['id'] = $id;
 
         if (!$id) {
-            $data['user_id'] = auth()->user()->id ?? 0;
+            $data['user_id'] = auth()->user()->id;
 
             if (!isset($data['status_id'])) {
                 $data['status_id'] = activeStatusId();
@@ -57,7 +57,7 @@ trait CommonRepoActions
                 $builder->update($arr);
                 $msg = 'All records statuses updated.';
             } else {
-                $ids = explode(',', $ids);
+                $ids = json_decode($ids);
 
                 $builder->whereIn('id', $ids)->update($arr);
                 $msg = count($ids) . ' records statuses updated.';

@@ -8,24 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory, CommonModelRelationShips;
-    
+
     protected $fillable = [
         "title",
         "slug",
-        "content",
-        "content_short",
+        "description",
+        "achievements",
         "source_uri",
-        "comment_disabled",
         "image",
-        "status_id",
-        "display_time",
-        "importance",
-        "user_id",
         "project_url",
         "github_url",
         "company_id",
         "start_date",
         "end_date",
+        "priority_number",
+        "user_id",
+        "status_id",
+
     ];
 
     function user()

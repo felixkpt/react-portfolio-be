@@ -19,7 +19,7 @@ class AboutRepository implements AboutRepositoryInterface
     public function index($id = null)
     {
         sleep(2);
-        $about = $this->model::query();
+        $about = $this->model::query()->where('user_id', auth()->id());
 
         if ($this->applyFiltersOnly) return $about;
 
@@ -28,7 +28,7 @@ class AboutRepository implements AboutRepositoryInterface
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, 'native')
+            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->htmls(['Status']);
 
         $results = $results->first();

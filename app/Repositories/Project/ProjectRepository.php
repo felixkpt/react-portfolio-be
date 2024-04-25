@@ -19,19 +19,20 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function index($id = null)
     {
         sleep(2);
-        $about = $this->model::query()->where('user_id', auth()->id());
+        $projects = $this->model::query()->with(['company', 'skills']);
 
-        if ($this->applyFiltersOnly) return $about;
+        if ($this->applyFiltersOnly) return $projects;
 
         $uri = '/admin/about/';
-        $results = SearchRepo::of($about, ['slogan', 'content'])
+
+        $results = SearchRepo::of($projects, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, 'native')
+            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->htmls(['Status']);
 
-        $results = $results->first();
+        $results = $id ? $results->first() : $results->paginate();
 
         return response(['results' => $results]);
     }
@@ -39,6 +40,11 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function store(Request $request, $data)
     {
         $res = $this->autoSave($data);
+
+        if (isset($data['skills']))
+            $res->skills()->sync($data['skills']);
+
+        $res = Project::with(['company', 'skills']);
 
         $action = 'created';
         if ($request->id)

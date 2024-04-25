@@ -18,19 +18,17 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string("title");
             $table->string("slug");
-            $table->longText("content");
-            $table->text("content_short")->nullable();
+            $table->longText("description");
+            $table->text("achievements");
             $table->string("source_uri")->nullable();
-            $table->boolean("comment_disabled")->default(0)->nullable();
-            $table->string("image")->nullable();
-            $table->dateTime("display_time")->nullable();
-            $table->unsignedTinyInteger("importance")->default(0);
             $table->string("project_url")->nullable();
             $table->string("github_url")->nullable();
             $table->unsignedBigInteger("company_id");
             $table->date("start_date");
             $table->date("end_date")->nullable();
+            $table->string("image")->nullable();
 
+            $table->unsignedInteger('priority_number')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

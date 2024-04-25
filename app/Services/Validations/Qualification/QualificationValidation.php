@@ -4,6 +4,7 @@ namespace App\Services\Validations\Qualification;
 
 use App\Models\Qualification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class QualificationValidation implements QualificationValidationInterface
@@ -12,20 +13,17 @@ class QualificationValidation implements QualificationValidationInterface
     public function store(Request $request): mixed
     {
 
-        // about should be only one record per user
-        $about = Qualification::where('user_id', auth()->id())->first();
-        if ($about && (!request()->id || request()->id != $about->id)) {
-            abort(422, 'You already have about page.');
-        }
-
         $validatedData = request()->validate([
-            'current_title' => 'nullable|string',
-            'name' => 'required|unique:about,name,' . request()->id,
-            'slogan' => 'nullable',
-            'content' => 'required|string',
+            'institution' => 'required|unique:qualifications,institution,' . request()->id,
+            'course' => 'required',
+            'qualification' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'priority_number' => 'nullable|numeric',
         ]);
 
-        $validatedData['slug'] = Str::slug($validatedData['name']);
+        $validatedData['start_date'] = Carbon::parse($validatedData['start_date'])->format('Y-m-d');
+        $validatedData['end_date'] = Carbon::parse($validatedData['end_date'])->format('Y-m-d');
 
         return $validatedData;
     }

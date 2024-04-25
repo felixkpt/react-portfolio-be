@@ -12,17 +12,12 @@ class SkillValidation implements SkillValidationInterface
     public function store(Request $request): mixed
     {
 
-        // about should be only one record per user
-        $about = Skill::where('user_id', auth()->id())->first();
-        if ($about && (!request()->id || request()->id != $about->id)) {
-            abort(422, 'You already have about page.');
-        }
-
         $validatedData = request()->validate([
-            'current_title' => 'nullable|string',
-            'name' => 'required|unique:about,name,' . request()->id,
-            'slogan' => 'nullable',
-            'content' => 'required|string',
+            'name' => 'required|unique:skills,name,' . request()->id,
+            'start_date' => 'required|date',
+            'experience_level_id' => 'required|string',
+            'skills_category_id' => 'required|string',
+            'priority_number' => 'nullable|numeric',
         ]);
 
         $validatedData['slug'] = Str::slug($validatedData['name']);

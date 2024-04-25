@@ -1,6 +1,5 @@
 <?php
 
-use Felixkpt\Nestedroutes\Http\Middleware\NestedroutesAuthMiddleware;
 use Felixkpt\Nestedroutes\RoutesHelper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -21,13 +20,13 @@ $nested_routes_folder = config('nestedroutes.folder');
 // Prefix all generated routes
 $prefix = config('nestedroutes.prefix') ?? 'api';
 // Middlewares to be passed before accessing any route
-$middleWares = config('nestedroutes.middleWares');
-$middleWares = [NestedroutesAuthMiddleware::class];
-$middleWares = $middleWares && count($middleWares) > 0 ? $middleWares : 'api';
+$middleWare = config('nestedroutes.middleWare');
 
-Route::middleware($middleWares)
+$middleWare = $middleWare && count($middleWare) > 0 ? $middleWare : 'api';
+
+Route::middleware($middleWare)
     ->prefix($prefix)
-    ->group(function () use ($nested_routes_folder) {
+    ->group(function() use ($nested_routes_folder) {
 
         $routes_path = base_path('routes/' . $nested_routes_folder);
 

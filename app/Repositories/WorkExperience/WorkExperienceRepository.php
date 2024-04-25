@@ -19,7 +19,7 @@ class WorkExperienceRepository implements WorkExperienceRepositoryInterface
     public function index($id = null)
     {
         sleep(2);
-        $company = $this->model::query()->where('user_id', auth()->id());
+        $company = $this->model::query();
 
         if ($this->applyFiltersOnly) return $company;
 
@@ -28,10 +28,10 @@ class WorkExperienceRepository implements WorkExperienceRepositoryInterface
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, 'native')
+            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->htmls(['Status']);
 
-        $results = $results->first();
+        $results = $id ? $results->first() : $results->paginate();
 
         return response(['results' => $results]);
     }

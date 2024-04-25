@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\About\AboutRepository;
 use App\Repositories\About\AboutRepositoryInterface;
+use App\Repositories\Company\CompanyRepository;
+use App\Repositories\Company\CompanyRepositoryInterface;
 use App\Repositories\ExperienceLevel\ExperienceLevelRepository;
 use App\Repositories\ExperienceLevel\ExperienceLevelRepositoryInterface;
 use App\Repositories\GetInTouch\GetInTouchRepository;
@@ -56,6 +58,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(SkillRepositoryInterface::class, SkillRepository::class);
         $this->app->singleton(SkillCategoryRepositoryInterface::class, SkillCategoryRepository::class);
         $this->app->singleton(WorkExperienceRepositoryInterface::class, WorkExperienceRepository::class);
+        $this->app->singleton(CompanyRepositoryInterface::class, CompanyRepository::class);
     }
 
     /**

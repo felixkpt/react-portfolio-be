@@ -4,77 +4,29 @@ namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\CommonControllerMethods;
 use App\Http\Controllers\Controller;
+use App\Repositories\Company\CompanyRepositoryInterface;
+use App\Services\Validations\Company\CompanyValidationInterface;
 use Illuminate\Http\Request;
-
-use App\Models\Company;
-use App\Repositories\SearchRepo;
-use Illuminate\Support\Facades\Schema;
-use App\Http\Traits\ControllerTrait;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class CompaniesController extends Controller
 {
 
-    /**
-     *  Controller Trait
-     */
     use CommonControllerMethods;
 
-    /**
-     * return company's index view
-     */
-    public function index()
-    {
-        $company = Company::query();
-        $results = SearchRepo::of($company)->paginate();
-
-        return response(['results' => $results]);
+    function __construct(
+        protected CompanyRepositoryInterface $repo,
+        protected CompanyValidationInterface $validationInterface,
+    ) {
     }
 
-    /**
-     * store company
-     */
-    public function store($is_update = false)
+    function index()
     {
-        if (request()->id && !$is_update) abort(403);
-
-        request()->validate([
-            'name' => 'required|unique:companies,name,' . request()->id . ',_id',
-            'url' => 'required|url|unique:companies,url,' . request()->id . ',_id',
-            'logo' => 'required|string',
-            'position' => 'required|string',
-            'roles' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-        ]);
-
-        $data = \request()->all();
-        $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m');
-        if (request()->end_date)
-            $data['end_date'] = Carbon::parse($data['end_date'])->format('Y-m');
-
-
-        $data['slug'] = Str::slug($data['name']);
-        if (!isset($data['user_id'])) {
-            if (Schema::hasColumn('companies', 'user_id'))
-                $data['user_id'] = currentUser()->id;
-        }
-
-        if (\request()->id) {
-            $action = "updated";
-        } else {
-            $action = "saved";
-            $data['status'] = 1;
-        }
-
-        Company::updateOrCreate(['_id' => request()->id ?? str()->random(20)], $data);
-
-        return response(['type' => 'success', 'message' => 'Company ' . $action . ' successfully']);
+        return $this->repo->index();
     }
 
-    function update()
+    function store(Request $request)
     {
-        return $this->store(true);
+        $data = $this->validationInterface->store($request);
+        return $this->repo->store($request, $data);
     }
 }

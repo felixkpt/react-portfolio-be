@@ -3,9 +3,9 @@
 namespace Database\Seeders\Admin;
 
 use App\Models\Permission;
-use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class AdminPermissionSeeder extends Seeder
 {
@@ -16,10 +16,18 @@ class AdminPermissionSeeder extends Seeder
      */
     public function run()
     {
-        Permission::updateOrCreate([
+
+        $arr = [
             'name' => 'admin_access',
-            'user_id' => User::first()->id,
-            'status_id' => Status::where('name', 'active')->first()->id ?? 0
-        ]);
+        ];
+
+        if (Schema::hasColumn('permissions', 'user_id')) {
+            $arr['user_id'] = User::first()->id;
+        }
+        if (Schema::hasColumn('permissions', 'status_id')) {
+            $arr['status_id'] = activeStatusId();
+        }
+
+        Permission::updateOrCreate(['name' => $arr['name']], $arr);
     }
 }

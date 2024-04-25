@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('project_skill', function (Blueprint $table) {
             $table->bigIncrements('id')->startingValue(1100);
-            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('skill_id');
             $table->unsignedTinyInteger('importance')->default(0);

@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             AdminRoleSeeder::class,
             PostStatusSeeder::class,
             PermissionSeeder::class,
-         
         ];
 
         // shuffle($arr);

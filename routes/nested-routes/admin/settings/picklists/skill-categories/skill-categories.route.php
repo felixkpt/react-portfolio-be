@@ -4,5 +4,5 @@ use App\Http\Controllers\Admin\Settings\Picklists\SkillCategories\SkillCategorie
 use Illuminate\Support\Facades\Route;
 
 $controller = SkillCategoriesController::class;
-Route::get('/', [$controller, 'index'])->name('List ExperienceLevels');
+Route::get('/', [$controller, 'index'])->name('List Skill categories');
 Route::post('/', [$controller, 'store'])->hidden();

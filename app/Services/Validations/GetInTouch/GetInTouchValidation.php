@@ -2,7 +2,6 @@
 
 namespace App\Services\Validations\GetInTouch;
 
-use App\Models\GetInTouch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,20 +11,11 @@ class GetInTouchValidation implements GetInTouchValidationInterface
     public function store(Request $request): mixed
     {
 
-        // about should be only one record per user
-        $about = GetInTouch::where('user_id', auth()->id())->first();
-        if ($about && (!request()->id || request()->id != $about->id)) {
-            abort(422, 'You already have about page.');
-        }
-
         $validatedData = request()->validate([
-            'current_title' => 'nullable|string',
-            'name' => 'required|unique:about,name,' . request()->id,
-            'slogan' => 'nullable',
-            'content' => 'required|string',
+            'type' => 'required|unique:get_in_touches,type,' . request()->id,
+            'link' => 'required',
+            'priority_number' => 'nullable|numeric',
         ]);
-
-        $validatedData['slug'] = Str::slug($validatedData['name']);
 
         return $validatedData;
     }

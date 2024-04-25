@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class SkillCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
         "name",
         "image",
-        "importance",
+        "priority_number",
         "user_id",
         "status_id"
     ];

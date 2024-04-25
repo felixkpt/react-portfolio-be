@@ -19,7 +19,7 @@ class GetInTouchRepository implements GetInTouchRepositoryInterface
     public function index($id = null)
     {
         sleep(2);
-        $about = $this->model::query()->where('user_id', auth()->id());
+        $about = $this->model::query();
 
         if ($this->applyFiltersOnly) return $about;
 
@@ -28,10 +28,10 @@ class GetInTouchRepository implements GetInTouchRepositoryInterface
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, 'native')
+            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->htmls(['Status']);
 
-        $results = $results->first();
+        $results = $id ? $results->first() : $results->paginate();
 
         return response(['results' => $results]);
     }

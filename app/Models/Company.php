@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory, CommonModelRelationShips;
-
+    
     protected $fillable = [
-        "name", "slug", "url", 'logo',
-        'position',
+        "name", "slug", "url", 'image',
         'roles',
         'start_date',
         'end_date',
+        'priority_number',
         "user_id",
         "status_id",
     ];

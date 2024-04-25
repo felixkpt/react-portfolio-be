@@ -20,11 +20,11 @@ return new class extends Migration
             $table->date('start_date');
             $table->string('experience_level_id');
             $table->unsignedBigInteger('skills_category_id');
-            $table->string('logo')->nullable();
-            $table->unsignedTinyInteger("importance")->default(0);
+            $table->string("image")->nullable();
             
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedTinyInteger("status")->default(1);
+            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedBigInteger('status_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();
         });
     }

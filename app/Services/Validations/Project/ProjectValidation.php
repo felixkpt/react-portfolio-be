@@ -2,7 +2,6 @@
 
 namespace App\Services\Validations\Project;
 
-use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,20 +11,20 @@ class ProjectValidation implements ProjectValidationInterface
     public function store(Request $request): mixed
     {
 
-        // about should be only one record per user
-        $about = Project::where('user_id', auth()->id())->first();
-        if ($about && (!request()->id || request()->id != $about->id)) {
-            abort(422, 'You already have about page.');
-        }
-
         $validatedData = request()->validate([
-            'current_title' => 'nullable|string',
-            'name' => 'required|unique:about,name,' . request()->id,
-            'slogan' => 'nullable',
-            'content' => 'required|string',
+            'title' => 'required|unique:projects,title,' . request()->id,
+            'company_id' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'description' => 'required',
+            'achievements' => 'required',
+            'project_url' => 'nullable|url',
+            'github_url' => 'nullable|url',
+            'skills' => 'required',
+            'priority_number' => 'nullable|numeric',
         ]);
 
-        $validatedData['slug'] = Str::slug($validatedData['name']);
+        $validatedData['slug'] = Str::slug($validatedData['title']);
 
         return $validatedData;
     }

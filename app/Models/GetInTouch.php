@@ -12,8 +12,8 @@ class GetInTouch extends Model
     protected $fillable = [
         'type',
         'link',
-        'logo',
-        'importance',
+        'image',
+        'priority_number',
         'user_id',
         "status_id",
     ];

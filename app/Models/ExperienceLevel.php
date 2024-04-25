@@ -10,11 +10,8 @@ class ExperienceLevel extends Model
     use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
-        "name", "slug", "url", 'logo',
-        'position',
-        'roles',
-        'start_date',
-        'end_date',
+        "name",
+        "priority_number",
         "user_id",
         "status_id",
     ];
