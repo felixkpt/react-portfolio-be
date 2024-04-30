@@ -25,17 +25,20 @@ class UserRepository implements UserRepositoryInterface
     public function index()
     {
 
-        $users = $this->model::with(['roles'])->when(request()->role_id, function ($q) {
-            if (request()->has('negate')) {
-                $q->whereDoesntHave('roles', function ($q) {
-                    $q->where('roles.id', request()->role_id);
-                });
-            } else {
-                $q->whereHas('roles', function ($q) {
-                    $q->where('roles.id', request()->role_id);
-                });
-            }
-        });
+        $users = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
+            ->with(['roles'])->when(request()->role_id, function ($q) {
+                if (request()->has('negate')) {
+                    $q->whereDoesntHave('roles', function ($q) {
+                        $q->where('roles.id', request()->role_id);
+                    });
+                } else {
+                    $q->whereHas('roles', function ($q) {
+                        $q->where('roles.id', request()->role_id);
+                    });
+                }
+            });
+
+        if ($this->applyFiltersOnly) return $users;
 
         $users = SearchRepo::of($users, ['name', 'id'])
             ->addColumn('Roles', function ($user) {
@@ -56,16 +59,16 @@ class UserRepository implements UserRepositoryInterface
         <i class="icon icon-list2 font-20"></i>
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item autotable-navigate" href="/admin/settings/users/view/' . $user->id . '">View</a></li>
+            <li><a class="dropdown-item autotable-navigate" href="/dashboard/settings/users/view/' . $user->id . '">View</a></li>
             '
                     .
                     (checkPermission('users', 'post') ?
-                        '<li><a class="dropdown-item autotable-edit" data-id="' . $user->id . '" href="/admin/settings/users/view/' . $user->id . '/edit">Edit</a></li>'
+                        '<li><a class="dropdown-item autotable-edit" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '/edit">Edit</a></li>'
                         :
                         '')
                     .
-                    '<li><a class="dropdown-item autotable-update-status" data-id="' . $user->id . '" href="/admin/settings/users/view/' . $user->id . '/update-status">Status update</a></li>
-            <li><a class="dropdown-item autotable-delete" data-id="' . $user->id . '" href="/admin/settings/users/view/' . $user->id . '">Delete</a></li>
+                    '<li><a class="dropdown-item autotable-update-status" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '/update-status">Status update</a></li>
+            <li><a class="dropdown-item autotable-delete" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '">Delete</a></li>
         </ul>
     </div>
     ';

@@ -3,6 +3,8 @@
 namespace App\Repositories\ContactMe;
 
 use App\Models\ContactMe;
+use App\Models\Message;
+use App\Models\Project;
 use App\Repositories\CommonRepoActions;
 use App\Repositories\SearchRepo;
 use Illuminate\Http\Request;
@@ -11,19 +13,21 @@ class ContactMeRepository implements ContactMeRepositoryInterface
 {
 
     use CommonRepoActions;
+    protected $model;
 
-    function __construct(protected ContactMe $model)
+    function __construct()
     {
+        $this->model = new ContactMe();
     }
 
     public function index($id = null)
     {
-        sleep(2);
-        $projects = $this->model::query()->with(['company', 'skills']);
+        $projects = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
+            ->with(['company', 'skills']);
 
         if ($this->applyFiltersOnly) return $projects;
 
-        $uri = '/admin/about/';
+        $uri = '/dashboard/about/';
 
         $results = SearchRepo::of($projects, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
@@ -39,16 +43,10 @@ class ContactMeRepository implements ContactMeRepositoryInterface
 
     public function store(Request $request, $data)
     {
+        $this->model = new Message();
+
         $res = $this->autoSave($data);
 
-        if (isset($data['skills']))
-            $res->skills()->sync($data['skills']);
-
-        $res = ContactMe::with(['company', 'skills']);
-
-        $action = 'created';
-        if ($request->id)
-            $action = 'updated';
-        return response(['type' => 'success', 'message' => 'ContactMe ' . $action . ' successfully', 'results' => $res]);
+        return response(['type' => 'success', 'message' => 'Your message was sent', 'results' => $res]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Validations\ContactMe;
 
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,16 +13,17 @@ class ContactMeValidation implements ContactMeValidationInterface
     {
 
         $validatedData = request()->validate([
-            'title' => 'required|unique:projects,title,' . request()->id . ',_id',
-            'company_id' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'project_url' => 'nullable|url',
-            'github_url' => 'nullable|url',
-            'skills' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required|string|min:2|max:5000',
         ]);
 
-        $validatedData['slug'] = Str::slug($validatedData['title']);
+        $unread = Message::where('email', $validatedData['email'])->first();
+        if ($unread && $unread->status_id == activeStatusId()) {
+            abort(422, 'Your prev message is unread');
+        }
+
+        $validatedData['ip'] = $request->ip();
 
         return $validatedData;
     }

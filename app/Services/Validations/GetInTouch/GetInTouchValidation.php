@@ -12,9 +12,9 @@ class GetInTouchValidation implements GetInTouchValidationInterface
     {
 
         $validatedData = request()->validate([
-            'type' => 'required|unique:get_in_touches,type,' . request()->id,
+            'name' => 'required|unique:get_in_touches,name,' . request()->id,
             'link' => 'required',
-            'priority_number' => 'nullable|numeric',
+            'priority' => 'nullable|numeric',
         ]);
 
         return $validatedData;

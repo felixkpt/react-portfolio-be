@@ -18,12 +18,11 @@ class GetInTouchRepository implements GetInTouchRepositoryInterface
 
     public function index($id = null)
     {
-        sleep(2);
-        $about = $this->model::query();
+        $about = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $about;
 
-        $uri = '/admin/about/';
+        $uri = '/dashboard/about/';
         $results = SearchRepo::of($about, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')

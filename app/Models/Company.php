@@ -7,17 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    use HasFactory, CommonModelRelationShips;
-    
+    use HasFactory, CommonModelRelationShips, ExcludeSystemFillable;
+
     protected $fillable = [
-        "name", "slug", "url", 'image',
+        "name", 
+        "slug",
+        "website",
+        'position',
         'roles',
         'start_date',
         'end_date',
-        'priority_number',
+        'priority',
+        'image',
         "user_id",
         "status_id",
     ];
+
+    protected $systemFillable = ['slug'];
 
     function user()
     {

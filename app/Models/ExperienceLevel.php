@@ -11,7 +11,7 @@ class ExperienceLevel extends Model
 
     protected $fillable = [
         "name",
-        "priority_number",
+        "priority",
         "user_id",
         "status_id",
     ];

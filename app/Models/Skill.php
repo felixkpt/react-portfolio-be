@@ -12,11 +12,10 @@ class Skill extends Model
     protected $fillable = [
         "name",
         "start_date",
-        "level",
-        "skills_category_id",
+        "skill_category_id",
         "experience_level_id",
         "image",
-        "priority_number",
+        "priority",
         "user_id",
         "status_id",
     ];
@@ -25,8 +24,14 @@ class Skill extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
     function skillCategory()
     {
-        return $this->belongsTo(SkillsCategory::class, 'skills_category_id');
+        return $this->belongsTo(SkillCategory::class);
+    }
+
+    function experienceLevel()
+    {
+        return $this->belongsTo(ExperienceLevel::class);
     }
 }

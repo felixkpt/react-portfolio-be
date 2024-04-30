@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('name');
             $table->date('start_date');
             $table->string('experience_level_id');
-            $table->unsignedBigInteger('skills_category_id');
+            $table->unsignedBigInteger('skill_category_id');
             $table->string("image")->nullable();
             
-            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

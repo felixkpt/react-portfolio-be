@@ -12,7 +12,7 @@ class ExperienceLevelValidation implements ExperienceLevelValidationInterface
 
         $validatedData = request()->validate([
             'name' => 'required|unique:experience_levels,name,' . request()->id,
-            'priority_number' => 'nullable|numeric',
+            'priority' => 'nullable|numeric',
         ]);
 
         return $validatedData;

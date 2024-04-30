@@ -7,25 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory, CommonModelRelationShips;
+    use HasFactory, CommonModelRelationShips, ExcludeSystemFillable;
 
     protected $fillable = [
         "title",
         "slug",
         "description",
         "achievements",
-        "source_uri",
         "image",
         "project_url",
         "github_url",
         "company_id",
         "start_date",
         "end_date",
-        "priority_number",
+        "priority",
         "user_id",
         "status_id",
 
     ];
+
+    protected $systemFillable = ['slug'];
 
     function user()
     {

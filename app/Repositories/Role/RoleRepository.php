@@ -32,12 +32,11 @@ class RoleRepository implements RoleRepositoryInterface
     public function index()
     {
 
-        $roles = $this->model::query();
+        $roles = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
 
-        if (request()->all == '1')
-            return response(['results' => $roles->get()]);
+        if ($this->applyFiltersOnly) return $roles;
 
-        $uri =  '/admin/settings/role-permissions/roles/';
+        $uri =  '/dashboard/settings/role-permissions/roles/';
         $view = 'link';
         $edit = 'modal';
         $roles = SearchRepo::of($roles, ['name', 'id'])
@@ -99,10 +98,7 @@ class RoleRepository implements RoleRepositoryInterface
     function storeRolePermissions(Request $request, $id)
     {
         //  Log::info('RRR', Role::find($id)->permissions->select('name', 'guard_name', 'parent_folder', 'uri', 'title', 'icon', 'hidden', 'is_public', 'position')->toArray());
-
-        // return response()->json(Permission::query()->select('name', 'guard_name', 'parent_folder', 'uri', 'title', 'icon', 'hidden', 'is_public', 'position')->get()->toArray());
-
-        $start = Carbon::now();
+        // return response('Done!');
 
         // Get the current folder from the request
         $current_folder = $request->current_folder;
@@ -131,7 +127,7 @@ class RoleRepository implements RoleRepositoryInterface
                 $q->where('parent_folder', '=', $parent_folder);
             }])->find($id)->permissions->pluck('id')->toArray();
 
-            Log::info("Existing for folder:", ['parent_folder' => $parent_folder, 'permissions' => $existing]);
+            // Log::info("Existing for folder:", ['parent_folder' => $parent_folder, 'permissions' => $existing]);
 
             $role->permissions()->detach($existing);
 
@@ -166,7 +162,7 @@ class RoleRepository implements RoleRepositoryInterface
 
         // 1. Remove permissions for parent folders not in the list of saved folders (probably the current role does not need the folders anymore)
         $permissionsToRemove = $role->permissions()->whereNotIn('parent_folder', $saved_folders)->pluck('id')->toArray();
-        Log::info('permissionsToRemove', ['permissionsToRemove' => $permissionsToRemove]);
+        // Log::info('permissionsToRemove', ['permissionsToRemove' => $permissionsToRemove]);
         $role->permissions()->detach($permissionsToRemove);
 
         // 2. Delete permissions for parent folders not in all_folders (probably the folders were renamed or deleted)
@@ -218,7 +214,7 @@ class RoleRepository implements RoleRepositoryInterface
 
         $jsonContent = file_get_contents(Storage::path($filePath));
 
-        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => [config('nestedroutes.folder'), 'dashboard']]]);
+        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => [config('nestedroutes.folder')]]]);
     }
 
     function getRoleRoutePermissions($id)

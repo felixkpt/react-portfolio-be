@@ -29,4 +29,10 @@ class AboutController extends Controller
         $data = $this->validationInterface->store($request);
         return $this->repo->store($request, $data);
     }
+
+    public function show($id)
+    {
+        return $this->repo->show($id);
+    }
+
 }

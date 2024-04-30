@@ -138,11 +138,11 @@ class  FileRepo
         try {
             $new_path = $folder . "/";
 
-            $pre = ($public) ? '/' : 'app/';
+            $pre = ($public) ? 'public/' : '/';
 
             $new_path = $pre . $new_path;
 
-            File::ensureDirectoryExists(storage_path() . '/app/' . $new_path);
+            File::ensureDirectoryExists(storage_path() . '/app/' . $new_path, 755);
 
             $disk->putFileAs($new_path, $file, $filename);
 

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string("slug");
             $table->longText("description");
             $table->text("achievements");
-            $table->string("source_uri")->nullable();
             $table->string("project_url")->nullable();
             $table->string("github_url")->nullable();
             $table->unsignedBigInteger("company_id");
@@ -28,7 +27,7 @@ return new class extends Migration
             $table->date("end_date")->nullable();
             $table->string("image")->nullable();
 
-            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

@@ -18,12 +18,11 @@ class WorkExperienceRepository implements WorkExperienceRepositoryInterface
 
     public function index($id = null)
     {
-        sleep(2);
-        $company = $this->model::query();
+        $company = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $company;
 
-        $uri = '/admin/company/';
+        $uri = '/dashboard/company/';
         $results = SearchRepo::of($company, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')

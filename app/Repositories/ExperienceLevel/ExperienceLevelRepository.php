@@ -18,12 +18,11 @@ class ExperienceLevelRepository implements ExperienceLevelRepositoryInterface
 
     public function index($id = null)
     {
-        sleep(2);
-        $experiencelevel = $this->model::query();
+        $experiencelevel = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $experiencelevel;
 
-        $uri = '/admin/settings/picklists/experience-levels/';
+        $uri = '/dashboard/settings/picklists/experience-levels/';
         $results = SearchRepo::of($experiencelevel, ['name'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')

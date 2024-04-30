@@ -6,6 +6,8 @@ use App\Services\Validations\About\AboutValidation;
 use App\Services\Validations\About\AboutValidationInterface;
 use App\Services\Validations\Company\CompanyValidation;
 use App\Services\Validations\Company\CompanyValidationInterface;
+use App\Services\Validations\ContactMe\ContactMeValidation;
+use App\Services\Validations\ContactMe\ContactMeValidationInterface;
 use App\Services\Validations\ExperienceLevel\ExperienceLevelValidation;
 use App\Services\Validations\ExperienceLevel\ExperienceLevelValidationInterface;
 use App\Services\Validations\GetInTouch\GetInTouchValidation;
@@ -63,6 +65,7 @@ class ValidationServiceProvider extends ServiceProvider
         $this->app->singleton(SkillCategoryValidationInterface::class, SkillCategoryValidation::class);
         $this->app->singleton(WorkExperienceValidationInterface::class, WorkExperienceValidation::class);
         $this->app->singleton(CompanyValidationInterface::class, CompanyValidation::class);
+        $this->app->singleton(ContactMeValidationInterface::class, ContactMeValidation::class);
 
     }
 

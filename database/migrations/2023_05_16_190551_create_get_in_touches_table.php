@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('get_in_touches', function (Blueprint $table) {
             $table->bigIncrements('id')->startingValue(1100);
             $table->uuid('uuid')->unique();
-            $table->string('type');
+            $table->string('name');
             $table->string('link');
             $table->string("image")->nullable();
             
-            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

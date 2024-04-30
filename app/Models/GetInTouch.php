@@ -10,10 +10,10 @@ class GetInTouch extends Model
     use HasFactory, CommonModelRelationShips;
 
     protected $fillable = [
-        'type',
+        'name',
         'link',
         'image',
-        'priority_number',
+        'priority',
         'user_id',
         "status_id",
     ];

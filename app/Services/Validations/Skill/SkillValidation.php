@@ -15,9 +15,9 @@ class SkillValidation implements SkillValidationInterface
         $validatedData = request()->validate([
             'name' => 'required|unique:skills,name,' . request()->id,
             'start_date' => 'required|date',
-            'experience_level_id' => 'required|string',
-            'skills_category_id' => 'required|string',
-            'priority_number' => 'nullable|numeric',
+            'experience_level_id' => 'required|exists:experience_levels,id',
+            'skill_category_id' => 'required|exists:skill_categories,id',
+            'priority' => 'nullable|numeric',
         ]);
 
         $validatedData['slug'] = Str::slug($validatedData['name']);

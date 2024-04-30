@@ -21,7 +21,8 @@ class AboutValidation implements AboutValidationInterface
         $validatedData = request()->validate([
             'current_title' => 'nullable|string',
             'name' => 'required|unique:about,name,' . request()->id,
-            'slogan' => 'nullable',
+            'slogan' => 'nullable|max:100',
+            'introduction' => 'nullable|max:500',
             'content' => 'required|string',
         ]);
 

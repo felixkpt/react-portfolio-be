@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('name');
             
-            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

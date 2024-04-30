@@ -21,12 +21,11 @@ class PostStatusRepository implements PostStatusRepositoryInterface
     public function index()
     {
 
-        $statuses = $this->model::query();
+        $statuses = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
 
-        if (request()->all == '1')
-            return response(['results' => $statuses->get()]);
+        if ($this->applyFiltersOnly) return $statuses;
 
-        $uri = '/admin/settings/picklists/statuses/post-statuses/';
+        $uri = '/dashboard/settings/picklists/statuses/post/';
         $statuses = SearchRepo::of($statuses, ['id', 'name'])
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Created_at', 'Created_at')

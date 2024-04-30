@@ -13,7 +13,7 @@ class SkillCategoryValidation implements SkillCategoryValidationInterface
 
         $validatedData = request()->validate([
             'name' => 'required|unique:skill_categories,name,' . request()->id,
-            'priority_number' => 'nullable|numeric',
+            'priority' => 'nullable|numeric',
         ]);
 
         $validatedData['slug'] = Str::slug($validatedData['name']);

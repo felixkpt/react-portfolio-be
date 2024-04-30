@@ -18,13 +18,13 @@ class SkillRepository implements SkillRepositoryInterface
 
     public function index($id = null)
     {
-        sleep(2);
-        $about = $this->model::query();
+        $about = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()))
+        ->with(['skillCategory', 'experienceLevel']);
 
         if ($this->applyFiltersOnly) return $about;
 
-        $uri = '/admin/about/';
-        $results = SearchRepo::of($about, ['slogan', 'content'])
+        $uri = '/dashboard/skills/';
+        $results = SearchRepo::of($about, ['name', 'experienceLevel.name'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')

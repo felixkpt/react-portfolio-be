@@ -18,13 +18,14 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('name');
             $table->string('slug');
-            $table->string('url')->nullable();
+            $table->string('website')->nullable();
+            $table->string('position');
             $table->text('roles');
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string("image")->nullable();
 
-            $table->unsignedInteger('priority_number')->default(9999);
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->timestamps();

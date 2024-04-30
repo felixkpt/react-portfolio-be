@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/auth')->group(function () {
-
+    
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('password', [AuthController::class, 'passwordResetLink']);
@@ -24,6 +24,5 @@ Route::prefix('api/auth')->group(function () {
         });
 
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('abilities', [AuthController::class, 'abilities']);
     });
 });

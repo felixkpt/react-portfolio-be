@@ -18,20 +18,21 @@ class AboutRepository implements AboutRepositoryInterface
 
     public function index($id = null)
     {
-        sleep(2);
-        $about = $this->model::query()->where('user_id', auth()->id());
+        $about = $this->model::query();
 
         if ($this->applyFiltersOnly) return $about;
 
-        $uri = '/admin/about/';
+        $uri = '/dashboard/about/';
+        $create_uri = $uri . 'create-or-update/{id?}';
+
         $results = SearchRepo::of($about, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
+            ->addActionColumn('action', $uri, ['view' => 'native', 'method' => 'any', 'create_uri' => $create_uri])
             ->htmls(['Status']);
 
-        $results = $results->first();
+        $results = $id ? $results->first() : $results->paginate();
 
         return response(['results' => $results]);
     }
@@ -44,5 +45,10 @@ class AboutRepository implements AboutRepositoryInterface
         if ($request->id)
             $action = 'updated';
         return response(['type' => 'success', 'message' => 'About ' . $action . ' successfully', 'results' => $res]);
+    }
+
+    public function show($id)
+    {
+        return $this->index($id);
     }
 }

@@ -16,7 +16,7 @@ class Qualification extends Model
         'start_date',
         'end_date',
         "image",
-        'importance',
+        'priority',
         'user_id',
         "status_id",
     ];
