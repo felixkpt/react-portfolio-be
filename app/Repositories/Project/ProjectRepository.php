@@ -21,8 +21,8 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function index($id = null)
     {
         $projects = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
-        ->when($id, fn ($q) => $q->where('id', $id))
-        ->with(['company', 'skills']);
+            ->when($id, fn ($q) => $q->where('id', $id))
+            ->with(['company', 'skills']);
 
         if ($this->applyFiltersOnly) return $projects;
 
@@ -31,7 +31,8 @@ class ProjectRepository implements ProjectRepositoryInterface
         $results = SearchRepo::of($projects, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
-            ->addColumn('description_trimmed', fn ($q) => Str::beforeLast(Str::limit($q->description, 600, '**'), '.'))
+            ->addColumn('description_trimmed', fn ($q) => Str::beforeLast(Str::limit($q->description, 600, '**'), '.') . '.')
+            ->addColumn('description_trimmed2', fn ($q) => Str::beforeLast(Str::limit($q->description, 220, '**'), '.') . '.')
             ->addColumn('Status', 'getStatus')
             ->addActionColumn('action', $uri, ['view' => 'native'])
             ->addFillable('company_id', 'description', ['input' => 'select', 'type' => null])
