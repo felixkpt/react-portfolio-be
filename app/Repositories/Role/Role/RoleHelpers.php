@@ -64,7 +64,6 @@ trait RoleHelpers
             $icon = $route['icon'];
             $slug = Str::slug(Str::replace('/', ' ', $uri), '.');
             $is_public = $route['is_public'];
-            $position = $route['position'] ?? 999999;
 
             $permissions[] = Permission::updateOrCreate(
                 ['name' => $slug],
@@ -75,7 +74,6 @@ trait RoleHelpers
                     'title' => $title,
                     'icon' => $icon,
                     'is_public' => $is_public,
-                    'position' => $position,
                     'guard_name' => $guard_name,
                     'user_id' => auth()->id() ?? 0,
                     'updated_at' => Carbon::now(),

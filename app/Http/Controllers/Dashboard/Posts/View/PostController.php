@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Posts\View;
+namespace App\Http\Controllers\Dashboard\Posts\View;
 
-use App\Http\Controllers\Admin\Posts\PostsController;
+use App\Http\Controllers\Dashboard\Posts\PostsController;
 use App\Http\Controllers\Controller;
 use App\Repositories\Post\PostRepositoryInterface;
 use Illuminate\Http\Request;

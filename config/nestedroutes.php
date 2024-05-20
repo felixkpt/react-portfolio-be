@@ -12,17 +12,16 @@ return [
     */
     'folder' => 'nested-routes',
     'prefix' => 'api',
-    'middleWare' => ['api', 'Felixkpt\Nestedroutes\Http\Middleware\NestedroutesAuthMiddleware::class'],
+    'middleWares' => ['api', 'nesteroutes.auth'],
     'permissions' => [
         'ignored_folders' => env('permissions_ignored_folders', [
             'auth',
             'client',
         ]),
     ],
-
-    'rename_main_folders' => [
-        'admin' => 'dashboard',
+    'rename_root_folders' => [
+        'admin' => 'dashboard'
     ],
+    'expanded_root_folders' => [],
     'guestRoleId' => 2,
-
 ];

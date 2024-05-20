@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Posts\Categories;
+namespace App\Http\Controllers\Dashboard\Posts\Categories;
 
-use App\Http\Controllers\Admin\Posts\Categories\Topics\TopicsController;
+use App\Http\Controllers\Dashboard\Posts\Categories\Topics\TopicsController;
 use App\Http\Controllers\Controller;
 use App\Models\PostCategory;
 use App\Models\PostStatus;

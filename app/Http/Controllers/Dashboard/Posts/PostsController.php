@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Posts;
+namespace App\Http\Controllers\Dashboard\Posts;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Post\PostRepositoryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Posts\Categories\Topics;
+namespace App\Http\Controllers\Dashboard\Posts\Categories\Topics;
 
 use App\Http\Controllers\Controller;
 use App\Models\PostCategory;
