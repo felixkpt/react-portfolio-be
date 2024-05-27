@@ -4,18 +4,26 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Services\Validations\User\UserValidationInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    function __construct(
+        private UserRepositoryInterface $userRepositoryInterface,
+        private UserValidationInterface $userValidationInterface,
+    ) {
+    }
+
     /**
      * Create User
      * @param Request $request
@@ -47,6 +55,12 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
+
+
+            $role = Role::find(config('nestedroutes.guestRoleId'));
+            $user->assignRole($role);
+            $user->default_role_id = $role->id;
+            $user->save();
 
             $user->token = $user->createToken("API TOKEN")->plainTextToken;
 
@@ -116,19 +130,6 @@ class AuthController extends Controller
         }
     }
 
-    public function abilities()
-    {
-        $abilities = request()->abilities ?? [];
-
-        $user = auth()->user();
-        $results = [];
-
-        foreach ($abilities as $ability) {
-            $results[$ability] = $user->can($ability);
-        }
-
-        return response(['results' => $results]);
-    }
 
     public function passwordResetLink(Request $request)
     {
@@ -156,13 +157,7 @@ class AuthController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        // Extract frontend URL from the request headers
-        $frontendUrl = $request->header('X-Frontend-URL');
-        Log::info('frontendUrl', [$frontendUrl]);
-
-        $reset_password_url = $frontendUrl . '/password-set/' . $token;
-
-        Mail::send('emails.forgetPassword', ['reset_password_url' => $reset_password_url], function ($message) use ($request) {
+        Mail::send('emails.forgetPassword', ['token' => $token], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Reset Password');
         });
@@ -213,6 +208,25 @@ class AuthController extends Controller
         return response(['message' => 'Your password has been changed!', 'results' => $user], 200);
     }
 
+    function profileShow()
+    {
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        return $this->userRepositoryInterface->profileUpdate($request);
+    }
+
+    public function updatePassword()
+    {
+        return $this->userRepositoryInterface->updateSelfPassword();
+    }
+
+    public function loginLogs()
+    {
+
+        return $this->userRepositoryInterface->loginLogs();
+    }
     /**
      * Logout the User
      * @param Request $request
@@ -228,7 +242,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Logged Out Successfully',
+                'message' => 'Logged Out Successfully',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
