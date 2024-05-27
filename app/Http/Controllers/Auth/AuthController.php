@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\AuthenticationLog;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
@@ -80,54 +81,88 @@ class AuthController extends Controller
 
     /**
      * Login The User
+     *
+     * This method handles user login requests. It validates the incoming request data,
+     * attempts to authenticate the user, logs the authentication attempt (whether successful or not),
+     * and returns an appropriate response.
+     *
      * @param Request $request
-     * @return User
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-
         try {
+            // Validate the request data
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'email' => 'required|email',
-                    'password' => 'required'
+                    'email' => 'required|email',  // Email is required and must be a valid email address
+                    'password' => 'required'      // Password is required
                 ]
             );
 
+            // If validation fails, log the attempt as unsuccessful and return a validation error response
             if ($validateUser->fails()) {
+                $this->logAuthenticationAttempt($request, false);
                 return response()->json([
-                    'status' => false,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
-                ], 401);
-            }
-            if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
-                    'errors' => [
-                        'email' => ['Email & Password does not match with our record.']
-                    ]
-                ], 401);
+                ], 401); // Return a 401 Unauthorized response with validation errors
             }
 
+            // Retrieve the user by email if it exists
             $user = User::where('email', $request->email)->first();
 
+            // Attempt to authenticate the user with the provided credentials
+            if (!Auth::attempt($request->only(['email', 'password']))) {
+                $this->logAuthenticationAttempt($request, false, $user); // Log the unsuccessful attempt
+                return response()->json([
+                    'message' => 'Email & Password do not match our records.',
+                    'errors' => [
+                        'email' => ['Email & Password do not match our records.']
+                    ]
+                ], 401); // Return a 401 Unauthorized response with an error message
+            }
+
+            // Authentication successful, retrieve the authenticated user
             $user = auth()->user();
+            $user = User::find(auth()->id())->first();
+            $this->logAuthenticationAttempt($request, true, $user); // Log the successful attempt
+
+            // Generate an API token for the authenticated user
             $user->token = $user->createToken("API TOKEN")->plainTextToken;
 
+            // Return a successful response with the user data and token
             return response()->json([
-                'status' => true,
                 'message' => 'User Logged In Successfully',
                 'results' => $user,
-            ], 200);
+            ], 200); // Return a 200 OK response with the user details
         } catch (\Throwable $th) {
+            // Catch any exceptions and return a 500 Internal Server Error response
             return response()->json([
-                'status' => false,
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Helper function to log authentication attempts
+     *
+     * @param Request $request
+     * @param bool $success Indicates whether the authentication attempt was successful
+     * @param User|null $user The authenticated user, if the attempt was successful
+     * @return void
+     */
+    protected function logAuthenticationAttempt(Request $request, bool $success, User $user = null)
+    {
+        AuthenticationLog::create([
+            'authenticatable_type' => User::class, // The type of the authenticatable model (User)
+            'authenticatable_id' => $user ? $user->id : null, // The ID of the authenticatable model, if available
+            'ip_address' => $request->ip(), // The IP address from which the request was made
+            'user_agent' => $request->header('User-Agent'), // The user agent string from the request
+            'login_at' => now(), // The timestamp of the login attempt
+            'login_successful' => $success, // Indicates whether the login attempt was successful
+        ]);
     }
 
 
@@ -227,6 +262,7 @@ class AuthController extends Controller
 
         return $this->userRepositoryInterface->loginLogs();
     }
+
     /**
      * Logout the User
      * @param Request $request
@@ -237,8 +273,21 @@ class AuthController extends Controller
         try {
             $user = $request->user();
 
-            if ($user)
+            if ($user) {
+
                 $user->currentAccessToken()->delete();
+
+                // Check for any previous sessions that were not logged out properly
+                $existingLog = AuthenticationLog::where('authenticatable_type', User::class)
+                    ->where('authenticatable_id', $user->id)
+                    ->whereNull('logout_at')
+                    ->orderBy('id', 'desc')
+                    ->first();
+                if ($existingLog) {
+                    // Update the logout_at field for existing log record
+                    $existingLog->update(['logout_at' => now()]);
+                }
+            }
 
             return response()->json([
                 'status' => true,

@@ -3,12 +3,12 @@
 namespace App\Repositories\User;
 
 use App\Mail\SendPassword;
-use App\Models\Core\AuthenticationLog;
+use App\Models\AuthenticationLog;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo\SearchRepo
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
@@ -242,7 +242,15 @@ class UserRepository implements UserRepositoryInterface
 
     public function loginLogs()
     {
-        return response(['results' => []]);
+        $auth_log = AuthenticationLog::query();
+
+        $results = SearchRepo::of($auth_log)
+            ->addColumn('ip', fn ($q) => $q->ip_address)
+            ->addColumn('source', fn ($q) => $q->user_agent)
+            ->addColumn('time', fn ($q) => $q->login_at ? Carbon::parse($q->login_at)->toDateTimeString() : '-')
+            ->paginate();
+
+        return response(['results' => $results]);
     }
 
     public function listAttemptedLogins()
