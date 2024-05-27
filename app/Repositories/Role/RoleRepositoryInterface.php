@@ -10,9 +10,11 @@ interface RoleRepositoryInterface extends CommonRepoActionsInterface
 
     public function index();
 
+    public function getUserRoles();
+
     public function store(Request $request, $data);
 
-    function getUserRolesAndDirectPermissions();
+    function getUserRolesAndPermissions();
 
     /**
      * Store role permissions for a specific role.
@@ -26,6 +28,7 @@ interface RoleRepositoryInterface extends CommonRepoActionsInterface
     public function show($id);
 
     function storeRoleMenuAndCleanPermissions(Request $request, $id);
+
     /**
      * Update the specified resource in storage.
      */

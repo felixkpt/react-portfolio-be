@@ -4,7 +4,7 @@ namespace App\Repositories\About;
 
 use App\Models\About;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 
 class AboutRepository implements AboutRepositoryInterface

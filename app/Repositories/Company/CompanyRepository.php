@@ -4,7 +4,7 @@ namespace App\Repositories\Company;
 
 use App\Models\Company;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -30,7 +30,7 @@ class CompanyRepository implements CompanyRepositoryInterface
             ->addColumn('Status', 'getStatus')
             ->addColumn('Period', fn ($q) => Carbon::parse($q->start_date)->format('M Y') . ($q->end_date ? ' - ' . Carbon::parse($q->end_date)->format('M Y') : ''))
             ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->addFillable('roles', 'start_date', ['input' => 'textarea'])
+            ->addFillable('roles', ['input' => 'textarea'], 'start_date')
             ->htmls(['Status'])
             ->orderBy('start_date', 'desc');
 

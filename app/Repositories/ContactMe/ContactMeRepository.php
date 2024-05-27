@@ -6,7 +6,7 @@ use App\Models\ContactMe;
 use App\Models\Message;
 use App\Models\Project;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 
 class ContactMeRepository implements ContactMeRepositoryInterface

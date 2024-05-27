@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PostCategory;
 use App\Models\PostStatus;
 use App\Repositories\Post\Category\PostCategoryRepositoryInterface;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use App\Services\Validations\Post\Category\PostCategoryValidationInterface;
 use Illuminate\Http\Request;
 

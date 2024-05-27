@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\SearchRepo;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -466,10 +466,10 @@ class SearchRepo
      * Add a custom column to the search results.
      *
      * @param string $fillable The column name.
-     * @param string $before The after function to generate the column value.
      * @param array $inputTypeInfo The input info. eg ->addFillable('skill_ids', 'priority', ['input' => 'multiselect', 'type' => null])
+     * @param string $before The after function to generate the column value.
      */
-    public function addFillable($field, $before = null, $inputTypeInfo = [])
+    public function addFillable($field, $inputTypeInfo = [], $before = null)
     {
         $this->addedFillable[] = [$field, $before, $inputTypeInfo];
 

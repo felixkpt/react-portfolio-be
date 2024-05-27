@@ -4,7 +4,7 @@ namespace App\Repositories\GetInTouch;
 
 use App\Models\GetInTouch;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 
 class GetInTouchRepository implements GetInTouchRepositoryInterface

@@ -4,7 +4,7 @@ namespace App\Repositories\Skill;
 
 use App\Models\Skill;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 
 class SkillRepository implements SkillRepositoryInterface

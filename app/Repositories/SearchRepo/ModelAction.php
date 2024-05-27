@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Repositories;
-
-use Illuminate\Support\Facades\Log;
+namespace App\Repositories\SearchRepo;
 
 class ModelAction
 {
@@ -29,8 +27,6 @@ class ModelAction
             $is_custom = true;
             $uri = $this->options['create_uri'];
         }
-
-        Log::info('ops', $this->options);
 
         $view = $options['view'] ?? 'modal';
         $edit = $options['edit'] ?? 'modal';

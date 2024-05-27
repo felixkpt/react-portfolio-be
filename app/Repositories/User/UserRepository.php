@@ -8,11 +8,13 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -22,11 +24,13 @@ class UserRepository implements UserRepositoryInterface
     {
     }
 
-    public function index()
+    public function index($id = null)
     {
 
-        $users = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
-            ->with(['roles'])->when(request()->role_id, function ($q) {
+        $users = $this->model::with(['roles'])
+            ->when(request()->status == 1, fn ($q) => $q->where('status_id', activeStatusId()))
+            ->when($id, fn ($q) => $q->where('id', $id))
+            ->when(request()->role_id, function ($q) {
                 if (request()->has('negate')) {
                     $q->whereDoesntHave('roles', function ($q) {
                         $q->where('roles.id', request()->role_id);
@@ -40,41 +44,23 @@ class UserRepository implements UserRepositoryInterface
 
         if ($this->applyFiltersOnly) return $users;
 
+        $uri = '/dashboard/settings/users/';
+
         $users = SearchRepo::of($users, ['name', 'id'])
             ->addColumn('Roles', function ($user) {
                 return implode(', ', $user->roles()->get()->pluck('name')->toArray());
             })
-            ->addFillable('password_confirmation', 'avatar')
-            ->addFillable('roles_multilist', 'two_factor_enabled', ['input' => 'input', 'type' => 'checkbox'])
-            ->addFillable('direct_permissions_multilist', 'roles_multilist', ['input' => 'input', 'type' => 'checkbox'])
-            ->addFillable('two_factor_enabled', 'theme', ['input' => 'input', 'type' => 'checkbox'])
-            ->addFillable('allowed_session_no', 'theme', ['input' => 'input', 'type' => 'number', 'min' => 1, 'max' => 10])
+            ->addFillable('password_confirmation', [], 'avatar')
+            ->addFillable('roles_multilist', ['input' => 'input', 'type' => 'checkbox'], 'two_factor_enabled')
+            ->addFillable('direct_permissions_multilist', ['input' => 'input', 'type' => 'checkbox'], 'roles_multilist')
+            ->addFillable('two_factor_enabled', ['input' => 'input', 'type' => 'checkbox'], 'theme')
+            ->addFillable('allowed_session_no', ['input' => 'input', 'type' => 'number', 'min' => 1, 'max' => 10], 'theme')
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Status', 'getStatus')
-            ->htmls(['Status'])
-            ->addColumn('action', function ($user) {
-                return '
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="icon icon-list2 font-20"></i>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item autotable-navigate" href="/dashboard/settings/users/view/' . $user->id . '">View</a></li>
-            '
-                    .
-                    (checkPermission('users', 'post') ?
-                        '<li><a class="dropdown-item autotable-edit" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '/edit">Edit</a></li>'
-                        :
-                        '')
-                    .
-                    '<li><a class="dropdown-item autotable-update-status" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '/update-status">Status update</a></li>
-            <li><a class="dropdown-item autotable-delete" data-id="' . $user->id . '" href="/dashboard/settings/users/view/' . $user->id . '">Delete</a></li>
-        </ul>
-    </div>
-    ';
-            })->paginate();
+            ->addColumn('action', fn ($q) => call_user_func('actionLinks', $q, $uri, 'modal', 'modal'))
+            ->htmls(['Status']);
 
-        return response(['results' => $users, 'status' => true]);
+        return response(['results' => $id ? $users->first() : $users->paginate(), 'status' => true]);
     }
 
     public function create()
@@ -106,27 +92,12 @@ class UserRepository implements UserRepositoryInterface
             $user->syncPermissions($permissions);
         }
 
-        return response(['message' => 'User ' . ($request->id ? 'updated' : 'created') . ' successfully.']);
+        return response(['results' => $user, 'message' => 'User ' . ($request->id ? 'updated' : 'created') . ' successfully.']);
     }
 
     public function show($id)
     {
-        $user = $this->model::with(['user', 'roles', 'direct_permissions'])->where(['users.id' => $id]);
-
-        $res = SearchRepo::of($user)
-            ->addColumn('Created_by', 'Created_by')
-            ->addColumn('Status', 'getStatus')
-            ->addColumn('two_factor_enabled', fn ($q) => $q->two_factor_enabled ? 'Yes' : 'No')
-            ->removeFillable(['password'])
-            ->addFillable('roles_multilist', 'refresh_api_token', ['input' => 'select', 'type' => 'multi'])
-            ->addFillable('direct_permissions_multilist', 'refresh_api_token', ['input' => 'select', 'type' => 'multi'])
-            ->addFillable('two_factor_enabled', 'theme', ['input' => 'input', 'type' => 'checkbox'])
-            ->addFillable('allowed_session_no', 'theme', ['input' => 'input', 'type' => 'number', 'min' => 1, 'max' => 10])
-            ->addFillable('refresh_api_token', null, ['input' => 'input', 'type' => 'checkbox'])
-            ->htmls(['Status'])
-            ->first();
-
-        return response(['results' => $res]);
+        return $this->index($id);
     }
 
     public function edit($id)
@@ -229,7 +200,27 @@ class UserRepository implements UserRepositoryInterface
         return response(['type' => 'success', 'message' => 'Password updated Successfully']);
     }
 
-    public function loginUser($userId)
+    public function resendToken($userId)
+    {
+
+        $user = User::findOrFail($userId);
+        request()->merge(['email' => $user->email]);
+
+        request()->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        // We will send the password reset link to this user. Once we have attempted
+        // to send the link, we will examine the response then see the message we
+        // need to show to the user. Finally, we'll send out a proper response.
+        $status = Password::sendResetLink(
+            request()->only('email')
+        );
+
+        return response(['message' => Str::title(Str::replace('.', ' ', $status))]);
+    }
+
+    public function autoLoginUser($userId)
     {
 
         $user = $this->model::find($userId);
@@ -244,10 +235,14 @@ class UserRepository implements UserRepositoryInterface
         $user->roles = $roles;
 
         return response()->json([
-            'status' => true,
-            'message' => 'User Logged In Successfully',
+            'message' => 'Logged In Successfully',
             'results' => $user,
         ], 200);
+    }
+
+    public function loginLogs()
+    {
+        return response(['results' => []]);
     }
 
     public function listAttemptedLogins()
@@ -281,7 +276,6 @@ class UserRepository implements UserRepositoryInterface
                     $color = 'danger';
                 }
                 return $color;
-                // return '<a href="javascript:void(0)"  class="btn badge btn-outline-' . $color . ' btn-sm"> ' . StatusRepository::getFailedLogin($failedloginattempts->login_successful) . '</a>';
             })
             ->paginate();
     }

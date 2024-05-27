@@ -4,7 +4,7 @@ namespace App\Repositories\Project;
 
 use App\Models\Project;
 use App\Repositories\CommonRepoActions;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -35,9 +35,9 @@ class ProjectRepository implements ProjectRepositoryInterface
             ->addColumn('description_trimmed2', fn ($q) => Str::beforeLast(Str::limit($q->description, 220, '**'), '.') . '.')
             ->addColumn('Status', 'getStatus')
             ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->addFillable('company_id', 'description', ['input' => 'select', 'type' => null])
-            ->addFillable('skill_ids', 'priority', ['input' => 'multiselect', 'type' => null])
-            ->addFillable('achievements', 'image', ['input' => 'textarea', 'type' => null, 'rows' => 5])
+            ->addFillable('company_id', ['input' => 'select', 'type' => null], 'description')
+            ->addFillable('skill_ids', ['input' => 'multiselect', 'type' => null], 'priority')
+            ->addFillable('achievements', ['input' => 'textarea', 'type' => null, 'rows' => 5], 'image')
             ->htmls(['Status']);
 
         $results = $id ? $results->first() : $results->paginate();

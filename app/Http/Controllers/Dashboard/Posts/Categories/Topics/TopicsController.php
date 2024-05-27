@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard\Posts\Categories\Topics;
 use App\Http\Controllers\Controller;
 use App\Models\PostCategory;
 use App\Models\PostTopic;
-use App\Repositories\SearchRepo;
+use App\Repositories\SearchRepo\SearchRepo;
 use App\Services\Filerepo\Controllers\FilesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
