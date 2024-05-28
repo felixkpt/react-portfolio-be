@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('project_slides', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('name');
-            $table->string('email');
-            $table->mediumText('message');
+            $table->unsignedBigInteger('project_id');
+            $table->string("image");
+            $table->string('caption')->nullable();
+
+            $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
-            $table->string('ip');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('project_slides');
     }
 };

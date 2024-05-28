@@ -22,7 +22,7 @@ class ProjectRepository implements ProjectRepositoryInterface
     {
         $projects = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
             ->when($id, fn ($q) => $q->where('id', $id))
-            ->with(['company', 'skills']);
+            ->with(['company', 'skills', 'slides']);
 
         if ($this->applyFiltersOnly) return $projects;
 

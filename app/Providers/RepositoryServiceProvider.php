@@ -18,6 +18,8 @@ use App\Repositories\PostStatus\PostStatusRepository;
 use App\Repositories\PostStatus\PostStatusRepositoryInterface;
 use App\Repositories\Project\ProjectRepository;
 use App\Repositories\Project\ProjectRepositoryInterface;
+use App\Repositories\Project\ProjectSlide\ProjectSlideRepository;
+use App\Repositories\Project\ProjectSlide\ProjectSlideRepositoryInterface;
 use App\Repositories\Qualification\QualificationRepository;
 use App\Repositories\Qualification\QualificationRepositoryInterface;
 use App\Repositories\Role\RoleRepository;
@@ -56,6 +58,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ExperienceLevelRepositoryInterface::class, ExperienceLevelRepository::class);
         $this->app->singleton(GetInTouchRepositoryInterface::class, GetInTouchRepository::class);
         $this->app->singleton(ProjectRepositoryInterface::class, ProjectRepository::class);
+        $this->app->singleton(ProjectSlideRepositoryInterface::class, ProjectSlideRepository::class);
         $this->app->singleton(QualificationRepositoryInterface::class, QualificationRepository::class);
         $this->app->singleton(SkillRepositoryInterface::class, SkillRepository::class);
         $this->app->singleton(SkillCategoryRepositoryInterface::class, SkillCategoryRepository::class);

@@ -20,6 +20,8 @@ use App\Services\Validations\Post\PostValidation;
 use App\Services\Validations\Post\PostValidationInterface;
 use App\Services\Validations\PostStatus\PostStatusValidation;
 use App\Services\Validations\PostStatus\PostStatusValidationInterface;
+use App\Services\Validations\Project\ProjectSlide\ProjectSlideValidation;
+use App\Services\Validations\Project\ProjectSlide\ProjectSlideValidationInterface;
 use App\Services\Validations\Project\ProjectValidation;
 use App\Services\Validations\Project\ProjectValidationInterface;
 use App\Services\Validations\Qualification\QualificationValidation;
@@ -60,6 +62,7 @@ class ValidationServiceProvider extends ServiceProvider
         $this->app->singleton(ExperienceLevelValidationInterface::class, ExperienceLevelValidation::class);
         $this->app->singleton(GetInTouchValidationInterface::class, GetInTouchValidation::class);
         $this->app->singleton(ProjectValidationInterface::class, ProjectValidation::class);
+        $this->app->singleton(ProjectSlideValidationInterface::class, ProjectSlideValidation::class);
         $this->app->singleton(QualificationValidationInterface::class, QualificationValidation::class);
         $this->app->singleton(SkillValidationInterface::class, SkillValidation::class);
         $this->app->singleton(SkillCategoryValidationInterface::class, SkillCategoryValidation::class);

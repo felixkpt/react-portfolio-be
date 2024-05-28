@@ -63,7 +63,10 @@ class PermissionRepository implements PermissionRepositoryInterface
 
     function getRolePermissions($id)
     {
+        sleep(2);
 
+        // return response(['']);
+ 
         if ($id === 'all') {
             $permissions = $this->model::whereNotNull('uri');
         } else {

@@ -41,4 +41,9 @@ class Project extends Model
     {
         return $this->belongsToMany(Skill::class);
     }
+
+    function slides()
+    {
+        return $this->hasMany(ProjectSlide::class);
+    }
 }

@@ -26,5 +26,5 @@ return [
     'expanded_root_folders' => [], // Expanded root folders for nested routes
     // If the key is not provided, it means the website doesn't support guest mode,
     // all unauthenticated requests will be redirected to login
-    'guestRoleId' => 1101,
+    'guestRoleId' => 2222,
 ];
