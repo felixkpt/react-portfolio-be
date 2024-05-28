@@ -110,12 +110,16 @@ class AuthController extends Controller
                 ], 401); // Return a 401 Unauthorized response with validation errors
             }
 
-            // Retrieve the user by email if it exists
-            $user = User::where('email', $request->email)->first();
 
             // Attempt to authenticate the user with the provided credentials
             if (!Auth::attempt($request->only(['email', 'password']))) {
-                $this->logAuthenticationAttempt($request, false, $user); // Log the unsuccessful attempt
+                
+                // Retrieve the user by email if it exists
+                $userByMail = User::where('email', $request->email)->first();
+                if ($userByMail) {
+                    $this->logAuthenticationAttempt($request, false, $userByMail); // Log the unsuccessful attempt
+                }
+
                 return response()->json([
                     'message' => 'Email & Password do not match our records.',
                     'errors' => [
@@ -259,7 +263,6 @@ class AuthController extends Controller
 
     public function loginLogs()
     {
-
         return $this->userRepositoryInterface->loginLogs();
     }
 
