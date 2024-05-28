@@ -13,6 +13,7 @@ class ProjectSlide extends Model
         "project_id",
         "image",
         "caption",
+        "description",
         "priority",
         "user_id",
         "status_id",

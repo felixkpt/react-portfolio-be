@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Settings\Picklists\ExperienceLevels\ExperienceLevelsController;
+use App\Http\Controllers\Dashboard\Settings\Picklists\SkillCategories\SkillCategoriesController;
 use Illuminate\Support\Facades\Route;
 
-$controller = ExperienceLevelsController::class;
+$controller = SkillCategoriesController::class;
 Route::get('/{id}', [$controller, 'show'])->hidden();
 Route::put('/{id}', [$controller, 'update'])->hidden();
 Route::patch('/{id}/update-status', [$controller, 'updateStatus'])->hidden();

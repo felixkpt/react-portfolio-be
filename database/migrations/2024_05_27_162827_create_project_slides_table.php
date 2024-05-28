@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->string("image");
             $table->string('caption')->nullable();
+            $table->text('description')->nullable();
 
             $table->unsignedInteger('priority')->default(9999);
             $table->unsignedBigInteger('user_id')->default(0)->nullable();

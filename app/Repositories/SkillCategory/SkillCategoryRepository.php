@@ -39,6 +39,7 @@ class SkillCategoryRepository implements SkillCategoryRepositoryInterface
 
     public function store(Request $request, $data)
     {
+
         $res = $this->autoSave($data);
 
         $action = 'created';

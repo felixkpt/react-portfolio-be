@@ -3,7 +3,6 @@
 namespace App\Services\Validations\Project\ProjectSlide;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProjectSlideValidation implements ProjectSlideValidationInterface
 {
@@ -13,8 +12,8 @@ class ProjectSlideValidation implements ProjectSlideValidationInterface
 
         $validatedData = request()->validate([
             'project_id' => 'required|exists:projects,id',
-            'image' => 'required|file',
             'caption' => 'required|string',
+            'description' => 'nullable|string|max:200',
             'priority' => 'nullable|numeric',
         ]);
 
