@@ -22,11 +22,17 @@ class CompanyValidation implements CompanyValidationInterface
             'website' => 'required|url|unique:companies,website,' . request()->id . ',id',
             'position' => 'required|string',
             'roles' => 'required|string',
-            'image' => 'required|file',
             'priority' => 'nullable|numeric',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
         ]);
+
+
+        if (!$request->id) {
+            request()->validate([
+                'image' => 'required|image',
+            ]);
+        }
 
         $validatedData['slug'] = Str::slug($validatedData['name']);
 

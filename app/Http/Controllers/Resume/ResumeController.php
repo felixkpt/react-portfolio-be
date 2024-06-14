@@ -23,11 +23,11 @@ class ResumeController extends Controller
   {
     $about = About::where('status_id', activeStatusId())->select('current_title', 'name', 'image', 'slogan')->first();
     $companies = Company::where('status_id', activeStatusId())->orderby('start_date', 'desc')->limit(5)->get();
-    $contacts = GetInTouch::where('status_id', activeStatusId())->orderby('priority', 'desc')->limit(3)->get();
-    $skills_categories = SkillCategory::with('skills')->where('status_id', activeStatusId())->orderby('priority', 'desc')->limit(3)->get();;
-    $projects = Project::where('status_id', activeStatusId())->with(['company', 'skills'])->orderby('priority', 'desc')->limit(3)->get();
+    $contacts = GetInTouch::where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(3)->get();
+    $skills_categories = SkillCategory::with(['skills' => fn($q) => $q->orderBy('priority', 'asc')])->where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(4)->get();;
+    $projects = Project::where('status_id', activeStatusId())->with(['company', 'skills'])->orderby('priority', 'asc')->limit(3)->get();
     $projects = $this->select($projects);
-    $qualifications = Qualification::where('status_id', activeStatusId())->orderby('priority', 'desc')->limit(3)->get();
+    $qualifications = Qualification::where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(3)->get();
     return [
       'about' => $about,
       'companies' => $companies,

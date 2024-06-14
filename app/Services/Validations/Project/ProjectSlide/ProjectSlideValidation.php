@@ -17,6 +17,12 @@ class ProjectSlideValidation implements ProjectSlideValidationInterface
             'priority' => 'nullable|numeric',
         ]);
 
+        if (!$request->id) {
+            request()->validate([
+                'image' => 'required|image',
+            ]);
+        }
+
         return $validatedData;
     }
 }

@@ -42,11 +42,6 @@ class ProjectSlideRepository implements ProjectSlideRepositoryInterface
     {
         $res = $this->autoSave($data);
 
-        if (isset($data['skill_ids']))
-            $res->skills()->sync($data['skill_ids']);
-
-        $res = ProjectSlide::with(['company', 'skills']);
-
         $action = 'created';
         if ($request->id)
             $action = 'updated';

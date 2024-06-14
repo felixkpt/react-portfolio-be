@@ -38,7 +38,8 @@ class ProjectRepository implements ProjectRepositoryInterface
             ->addFillable('company_id', ['input' => 'select', 'type' => null], 'description')
             ->addFillable('skill_ids', ['input' => 'multiselect', 'type' => null], 'priority')
             ->addFillable('achievements', ['input' => 'textarea', 'type' => null, 'rows' => 5], 'image')
-            ->htmls(['Status']);
+            ->htmls(['Status'])
+            ->orderBy('priority', 'asc');
 
         $results = $id ? $results->first() : $results->paginate();
 

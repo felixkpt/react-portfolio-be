@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('project_id');
-            $table->string("image");
+            $table->string("image")->nullable();
             $table->string('caption')->nullable();
             $table->text('description')->nullable();
 

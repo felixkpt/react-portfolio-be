@@ -19,7 +19,7 @@
                         </tr>
                         <tr>
                             <td class="pt-0">
-                                {!! str()->beforeLast(str()->limit($company->roles, 700, '__'), '.') . '.' !!}
+                                {!! str()->beforeLast(str()->limit($company->roles, 950, '__'), '.') . '.' !!}
                             </td>
                         </tr>
                     </table>

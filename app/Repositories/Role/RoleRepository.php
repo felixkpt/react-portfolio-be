@@ -90,7 +90,7 @@ class RoleRepository implements RoleRepositoryInterface
 
         request()->merge(['without_response' => true]);
 
-        $route_permissions = [];
+        $route_permissions = $this->getRoleRoutePermissions($user->default_role_id ?? $this->guestRoleId);
 
         return response(['results' => compact('roles', 'route_permissions', 'direct_permissions')]);
     }
@@ -254,8 +254,7 @@ class RoleRepository implements RoleRepositoryInterface
 
         $jsonContent = file_get_contents(Storage::path($filePath));
 
-        $expanded_root_folders = array_merge([config('nestedroutes.folder')], config('nestedroutes.expanded_root_folders'));
-        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => $expanded_root_folders]]);
+        return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => [config('nestedroutes.folder'), 'dashboard']]]);
     }
 
     function addUser($id)
