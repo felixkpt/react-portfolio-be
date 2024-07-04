@@ -3,7 +3,6 @@
 namespace App\Services\Filerepo\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\TemporaryToken;
 use App\Services\Filerepo\FileRepo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,16 +19,33 @@ class FilesController extends Controller
     {
     }
 
+    function getFolder($modelRecord)
+    {
+        $folder = $modelRecord ? strtolower(Str::plural(class_basename($modelRecord))) : (request()->files_folder ?? 'uncategorized');
+
+        $gcs_project_folder = null;
+        if (env('FILESYSTEM_DRIVER') == 'gcs') {
+            $gcs_project_folder = config('app.gcs_project_folder') ?? 'file-uploads';
+        }
+
+        if ($gcs_project_folder) {
+            $folder = $gcs_project_folder . '/' . $folder;
+        }
+
+        return $folder;
+    }
+
     /**
      * loadDropzone -> store files
      */
     public function saveFiles($modelRecord = null, $files = null)
     {
 
-        if (request()->clear == 1)
+        if (request()->clear == 1) {
             return FileRepo::deleteOldTempFiles();
+        }
 
-        $this->files_folder = $modelRecord ? strtolower(Str::plural(class_basename($modelRecord))) : (request()->files_folder ?? 'uncategorized');
+        $this->files_folder = $this->getFolder($modelRecord);
 
         $files = $files ?? (request()->file('files_array') ?: []);
 
@@ -58,8 +74,8 @@ class FilesController extends Controller
                     'path' => $this->files_folder . '/' . $file_name
                 ];
 
-                if (!Storage::disk(env('FILESYSTEM_DRIVER', 'local'))->exists($path)) {
 
+                if (!Storage::disk(env('FILESYSTEM_DRIVER', 'local'))->exists($path)) {
                     $file = $image;
                     $folder = $this->files_folder;
                     $record = FileRepo::uploadFile($modelRecord, $file, $folder, $file_name, 0, true,);
@@ -120,8 +136,6 @@ class FilesController extends Controller
     public function show($path)
     {
         $filePath = $path;
-
-        // dd($path);
 
         if (Storage::disk('local')->exists($filePath)) {
             $file = Storage::disk('local')->get($filePath);

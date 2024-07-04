@@ -4,6 +4,7 @@ namespace App\Services\Validations\About;
 
 use App\Models\About;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class AboutValidation implements AboutValidationInterface
@@ -12,6 +13,7 @@ class AboutValidation implements AboutValidationInterface
     public function store(Request $request): mixed
     {
 
+        Log::info('REQ:', [$request->all()]);
         // about should be only one record per user
         $about = About::where('user_id', auth()->id())->first();
         if ($about && (!request()->id || request()->id != $about->id)) {

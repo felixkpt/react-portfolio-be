@@ -248,11 +248,11 @@ class RoleRepository implements RoleRepositoryInterface
         // Get JSON from storage
         $filePath = '/system/roles/' . Str::slug($role->name) . '_menu.json';
 
-        if (!Storage::exists($filePath)) {
+        if (!Storage::disk('local')->exists($filePath)) {
             return response()->json(['message' => 'Role ' . $role->name . ' permissions file not found'], 404);
         }
 
-        $jsonContent = file_get_contents(Storage::path($filePath));
+        $jsonContent = file_get_contents(Storage::disk('local')->path($filePath));
 
         return response()->json(['results' => ['roles' => $role, 'menu' => json_decode($jsonContent), 'expanded_root_folders' => [config('nestedroutes.folder'), 'dashboard']]]);
     }

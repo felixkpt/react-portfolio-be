@@ -58,6 +58,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
+    'gcs_project_folder' => env('GCS_PROJECT_FOLDER','portfolio'),
 
     /*
     |--------------------------------------------------------------------------

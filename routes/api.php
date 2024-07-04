@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Resume\ResumeController;
+use App\Services\Filerepo\Controllers\FilesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,6 @@ Route::prefix('resume')->group(function () {
     Route::get('/', [ResumeController::class, 'index']);
     Route::post('/download', [ResumeController::class, 'download']);
 });
+
+Route::post('/media-upload', [FilesController::class, 'saveFiles']);
+
