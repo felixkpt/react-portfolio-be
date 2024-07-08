@@ -20,7 +20,7 @@ class ModelAction
         $parent_uri = $this->options['uri'];
         $uri = $this->options['uri'] . 'view/{id}';
 
-        $method = $this->options['method'] ?? 'psst';
+        $method = $this->options['method'] ?? 'post';
 
         $is_custom = false;
         if (isset($this->options['create_uri']) && $this->options['create_uri']) {

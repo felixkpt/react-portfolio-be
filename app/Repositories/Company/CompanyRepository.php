@@ -19,17 +19,19 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function index($id = null)
     {
+        request()->merge(['companies' => true]);
+
         $company = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $company;
 
         $uri = '/dashboard/companies/';
         $results = SearchRepo::of($company, ['name', 'url', 'start_date', 'end_date'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Status', 'getStatus')
             ->addColumn('Period', fn ($q) => Carbon::parse($q->start_date)->format('M Y') . ($q->end_date ? ' - ' . Carbon::parse($q->end_date)->format('M Y') : ''))
-            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->addFillable('roles', ['input' => 'textarea'], 'start_date')
             ->htmls(['Status'])
             ->orderBy('start_date', 'desc');
