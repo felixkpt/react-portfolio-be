@@ -13,7 +13,7 @@
                         </tr>
                         <tr>
                             <td>
-                                {!! str()->beforeLast(str()->limit($project['description'], 300, '__'), '.') . '.' !!}
+                                {!! str()->beforeLast(str()->limit($project['description'], 350, '__'), '.') . '.' !!}
                             </td>
                         </tr>
                     </table>

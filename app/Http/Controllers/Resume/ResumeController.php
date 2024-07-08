@@ -9,6 +9,7 @@ use App\Models\GetInTouch;
 use App\Models\Project;
 use App\Models\Qualification;
 use App\Models\SkillCategory;
+use Carbon\Carbon;
 use PDF;
 
 class ResumeController extends Controller
@@ -45,7 +46,7 @@ class ResumeController extends Controller
 
     $pdf = PDF::loadView('resume/pdf_view', [])->setOption([]);
     // download PDF file with download method
-    return $pdf->download($this->data()['about']->name . ' resume.pdf');
+    return $pdf->download($this->data()['about']->name.'_'.Carbon::today()->format('Y_m_d') . '_resume.pdf');
   }
 
   private function select($q)
