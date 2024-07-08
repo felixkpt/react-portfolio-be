@@ -22,7 +22,7 @@ class GetInTouchRepository implements GetInTouchRepositoryInterface
 
         if ($this->applyFiltersOnly) return $about;
 
-        $uri = '/dashboard/about/';
+        $uri = '/dashboard/settings/picklists/get-in-touch/';
         $results = SearchRepo::of($about, ['slogan', 'content'])
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
