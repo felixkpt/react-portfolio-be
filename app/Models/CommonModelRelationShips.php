@@ -29,11 +29,14 @@ trait CommonModelRelationShips
         return Attribute::make(
             get: function ($value) {
 
-                if (env('FILESYSTEM_DRIVER', 'local') == 'local') {
-                    return env('APP_URL') . Storage::url($value);
-                } else {
-                    return Storage::url($value);
+                if ($value) {
+                    if (env('FILESYSTEM_DRIVER', 'local') == 'local') {
+                        return env('APP_URL') . Storage::url($value);
+                    } else {
+                        return Storage::url($value);
+                    }
                 }
+                return null;
             },
             set: fn ($value) => strtolower($value),
         );
