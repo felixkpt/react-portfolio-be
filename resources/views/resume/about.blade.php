@@ -4,7 +4,7 @@
             @if ($about->image)
                 <td class="px-2 mb-3">
                     <div style="width:4.3rem;height: 4.3rem;border-radius:50%">
-                        <img src="{{ url('assets/' . $about->image) }}" alt=""
+                        <img src="{{ $about->image }}" alt=""
                             style="width:4rem;height: 4rem;border-radius:50%">
                     </div>
                 </td>
