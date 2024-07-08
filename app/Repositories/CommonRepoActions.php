@@ -25,6 +25,11 @@ trait CommonRepoActions
             }
         }
 
+        if (isset($data['priority']) && $data['priority'] == 0) {
+            $highestPriority = $this->model::max('priority') ?? 0;
+            $data['priority'] = $highestPriority + 1;
+        }
+
         $record = $this->model::updateOrCreate(['id' => $id], $data);
 
         $this->saveModelImage($record);

@@ -27,7 +27,14 @@ trait CommonModelRelationShips
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Storage::url($value),
+            get: function ($value) {
+
+                if (env('FILESYSTEM_DRIVER', 'local') == 'local') {
+                    return env('APP_URL') . Storage::url($value);
+                } else {
+                    return Storage::url($value);
+                }
+            },
             set: fn ($value) => strtolower($value),
         );
     }
