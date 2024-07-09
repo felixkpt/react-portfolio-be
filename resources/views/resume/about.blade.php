@@ -1,5 +1,5 @@
 <div class="mb-4">
-    <table class="table table-borderless table-sm m-0">
+    <table class="table table-borderless table-sm m-x-0 my-2">
         <tr>
             @if ($about->image)
                 <td class="px-2 mb-3">
