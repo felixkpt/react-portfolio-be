@@ -3,9 +3,9 @@
         <tr>
             @if ($about->image)
                 <td class="px-2 mb-3">
-                    <div style="width:4.3rem;height: 4.3rem;border-radius:50%">
+                    <div style="width:4.7rem;height: 4.7rem;border-radius:50%">
                         <img src="{{ $about->image }}" alt=""
-                            style="width:4rem;height: 4rem;border-radius:50%">
+                            style="width:4.6rem;height: 4.6rem;border-radius:50%">
                     </div>
                 </td>
             @endif
