@@ -14,6 +14,9 @@
             </td>
         </tr>
     </table>
-    <h6> <small>{{ $about->slogan }}</small> </h6>
+    <h6 class="mb-2">{{ $about->slogan }} </h6>
     <hr>
+    <div>
+        {{$about->introduction}}
+    </div>
 </div>

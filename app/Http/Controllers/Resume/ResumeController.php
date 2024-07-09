@@ -22,7 +22,7 @@ class ResumeController extends Controller
 
   private function data()
   {
-    $about = About::where('status_id', activeStatusId())->select('current_title', 'name', 'image', 'slogan')->first();
+    $about = About::where('status_id', activeStatusId())->select('current_title', 'name', 'introduction', 'image', 'slogan')->first();
     $companies = Company::where('status_id', activeStatusId())->orderby('start_date', 'desc')->limit(5)->get();
     $contacts = GetInTouch::where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(3)->get();
     $skills_categories = SkillCategory::with(['skills' => fn($q) => $q->orderBy('priority', 'asc')])->where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(4)->get();;
