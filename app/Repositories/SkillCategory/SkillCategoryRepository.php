@@ -18,18 +18,16 @@ class SkillCategoryRepository implements SkillCategoryRepositoryInterface
 
     public function index($id = null)
     {
-        $skillcategories = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()))
-        ->with(['skills']);
+        $skillcategories = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()))
+            ->with(['skills']);
 
         if ($this->applyFiltersOnly) return $skillcategories;
 
         $uri = '/dashboard/settings/picklists/skill-categories/';
         $results = SearchRepo::of($skillcategories, ['name'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->htmls(['Status'])
             ->orderBy('priority');
 
         $results = $id ? $results->first() : $results->paginate();

@@ -21,12 +21,13 @@ class StatusRepository implements StatusRepositoryInterface
     public function index()
     {
 
-        $statuses = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
-        
+        $statuses = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()));
+
         if ($this->applyFiltersOnly) return $statuses;
 
         $uri = '/dashboard/settings/picklists/statuses/default/';
         $statuses = SearchRepo::of($statuses, ['id', 'name'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('Icon', function ($q) {

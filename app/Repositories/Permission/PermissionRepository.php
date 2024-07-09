@@ -31,12 +31,10 @@ class PermissionRepository implements PermissionRepositoryInterface
 
         $uri = '/dashboard/settings/role-permissions/permissions/';
         $permissions = SearchRepo::of($permissions, ['name', 'id'])
+            ->setModelUri($uri)
             ->fillable(['name', 'guard_name'])
             ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
             ->addColumn('Created_at', 'Created_at')
-            ->addActionColumn('action', $uri)
-            ->htmls(['Status'])
             ->paginate();
 
         return response(['results' => $permissions]);
@@ -66,7 +64,7 @@ class PermissionRepository implements PermissionRepositoryInterface
         sleep(2);
 
         // return response(['']);
- 
+
         if ($id === 'all') {
             $permissions = $this->model::whereNotNull('uri');
         } else {

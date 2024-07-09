@@ -29,16 +29,14 @@ class ProjectRepository implements ProjectRepositoryInterface
         $uri = '/dashboard/projects/';
 
         $results = SearchRepo::of($projects, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
             ->addColumn('description_trimmed', fn ($q) => Str::beforeLast(Str::limit($q->description, 600, '**'), '.') . '.')
             ->addColumn('description_trimmed2', fn ($q) => Str::beforeLast(Str::limit($q->description, 220, '**'), '.') . '.')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
             ->addFillable('company_id', ['input' => 'select', 'type' => null], 'description')
             ->addFillable('skill_ids', ['input' => 'multiselect', 'type' => null], 'priority')
             ->addFillable('achievements', ['input' => 'textarea', 'type' => null, 'rows' => 5], 'image')
-            ->htmls(['Status'])
             ->orderBy('priority', 'asc');
 
         $results = $id ? $results->first() : $results->paginate();

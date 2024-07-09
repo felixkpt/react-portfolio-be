@@ -27,13 +27,11 @@ class CompanyRepository implements CompanyRepositoryInterface
 
         $uri = '/dashboard/companies/';
         $results = SearchRepo::of($company, ['name', 'url', 'start_date', 'end_date'])
-            ->setModelUri($uri)
+            ->setModelUri($uri)->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
             ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
             ->addColumn('Period', fn ($q) => Carbon::parse($q->start_date)->format('M Y') . ($q->end_date ? ' - ' . Carbon::parse($q->end_date)->format('M Y') : ''))
             ->addFillable('roles', ['input' => 'textarea'], 'start_date')
-            ->htmls(['Status'])
             ->orderBy('start_date', 'desc');
 
         $results = $id ? $results->first() : $results->paginate();

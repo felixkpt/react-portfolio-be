@@ -18,17 +18,15 @@ class QualificationRepository implements QualificationRepositoryInterface
 
     public function index($id = null)
     {
-        $about = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
+        $about = $this->model::query()->when(showActiveRecords(), fn ($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $about;
 
         $uri = '/dashboard/qualifications/';
         $results = SearchRepo::of($about, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
-            ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->htmls(['Status']);
+            ->addColumn('Created_by', 'getUser');
 
         $results = $id ? $results->first() : $results->paginate();
 

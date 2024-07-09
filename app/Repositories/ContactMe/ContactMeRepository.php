@@ -30,11 +30,9 @@ class ContactMeRepository implements ContactMeRepositoryInterface
         $uri = '/dashboard/about/';
 
         $results = SearchRepo::of($projects, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
-            ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->htmls(['Status']);
+            ->addColumn('Created_by', 'getUser');
 
         $results = $id ? $results->first() : $results->paginate();
 

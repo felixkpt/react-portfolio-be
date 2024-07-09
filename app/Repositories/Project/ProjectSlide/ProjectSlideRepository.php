@@ -27,11 +27,9 @@ class ProjectSlideRepository implements ProjectSlideRepositoryInterface
         $uri = '/dashboard/projects/project-slides/';
 
         $results = SearchRepo::of($project_slides, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
-            ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->htmls(['Status']);
+            ->addColumn('Created_by', 'getUser');
 
         $results = $id ? $results->first() : $results->paginate();
 

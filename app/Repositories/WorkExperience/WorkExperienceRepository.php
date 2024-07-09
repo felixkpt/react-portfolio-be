@@ -24,11 +24,9 @@ class WorkExperienceRepository implements WorkExperienceRepositoryInterface
 
         $uri = '/dashboard/company/';
         $results = SearchRepo::of($company, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
-            ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native'])
-            ->htmls(['Status']);
+            ->addColumn('Created_by', 'getUser');
 
         $results = $id ? $results->first() : $results->paginate();
 

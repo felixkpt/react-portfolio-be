@@ -26,11 +26,9 @@ class AboutRepository implements AboutRepositoryInterface
         $create_uri = $uri . 'create-or-update/{id?}';
 
         $results = SearchRepo::of($about, ['slogan', 'content'])
+            ->setModelUri($uri)
             ->addColumn('Created_at', 'Created_at')
-            ->addColumn('Created_by', 'getUser')
-            ->addColumn('Status', 'getStatus')
-            ->addActionColumn('action', $uri, ['view' => 'native', 'method' => 'any', 'create_uri' => $create_uri])
-            ->htmls(['Status']);
+            ->addColumn('Created_by', 'getUser');
 
         $results = $id ? $results->first() : $results->paginate();
 
