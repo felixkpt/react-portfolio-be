@@ -15,5 +15,5 @@
         </tr>
     </table>
     <h6> <small>{{ $about->slogan }}</small> </h6>
-    <hr class="border">
+    <hr>
 </div>
