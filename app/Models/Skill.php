@@ -24,7 +24,7 @@ class Skill extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     function skillCategory()
     {
         return $this->belongsTo(SkillCategory::class);
@@ -33,5 +33,10 @@ class Skill extends Model
     function experienceLevel()
     {
         return $this->belongsTo(ExperienceLevel::class);
+    }
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_skill')->withTimestamps();
     }
 }

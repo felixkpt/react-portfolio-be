@@ -17,15 +17,20 @@ class ResumeController extends Controller
   // Display resume
   public function index()
   {
-    return view('resume/index', $this->data());
+    return view('resume-v2/index', $this->data());
   }
 
   private function data()
   {
     $about = About::where('status_id', activeStatusId())->select('current_title', 'name', 'introduction', 'image', 'slogan')->first();
-    $companies = Company::where('status_id', activeStatusId())->orderby('start_date', 'desc')->limit(5)->get();
+    $companies = Company::where('status_id', activeStatusId())->with(['skills'])->orderby('start_date', 'desc')->limit(5)->get();
     $contacts = GetInTouch::where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(3)->get();
-    $skills_categories = SkillCategory::with(['skills' => fn($q) => $q->orderBy('priority', 'asc')])->where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(4)->get();;
+    $skills_categories = SkillCategory::with([
+      'skills' => fn($q) => $q->orderBy('priority', 'asc')->with('experienceLevel')
+    ])->where('status_id', activeStatusId())
+      ->orderBy('priority', 'asc')
+      ->limit(4)
+      ->get();
     $projects = Project::where('status_id', activeStatusId())->with(['company', 'skills'])->orderby('priority', 'asc')->limit(3)->get();
     $projects = $this->select($projects);
     $qualifications = Qualification::where('status_id', activeStatusId())->orderby('priority', 'asc')->limit(3)->get();
@@ -41,12 +46,15 @@ class ResumeController extends Controller
   // Generate PDF
   public function download()
   {
-    // share data to view
+    // Share data to view
     view()->share($this->data());
 
-    $pdf = PDF::loadView('resume/pdf_view', [])->setOption([]);
-    // download PDF file with download method
-    return $pdf->download($this->data()['about']->name.'_'.Carbon::today()->format('Y_m_d') . '_resume.pdf');
+    // Load view and set paper size to A4
+    $pdf = PDF::loadView('resume-v2/pdf_view', [])
+      ->setOption('paper', 'A4');
+
+    // Download PDF file with download method
+    return $pdf->download($this->data()['about']->name . '_' . Carbon::today()->format('Y_m_d') . '_resume.pdf');
   }
 
   private function select($q)

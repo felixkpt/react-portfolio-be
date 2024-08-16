@@ -32,27 +32,31 @@ trait CommonRepoActions
 
         $record = $this->model::updateOrCreate(['id' => $id], $data);
 
-        $this->saveModelImage($record);
+        $this->saveModelFiles($record);
 
         return $record;
     }
 
-    function saveModelImage($record)
+    function saveModelFiles($record)
     {
-        if (request()->hasFile('image')) {
+        try {
+            // Iterate through all the files in the request
+            foreach (request()->allFiles() as $field => $files) {
+                if (Schema::hasColumn($record->getTable(), $field)) {
+                    $uploader = new FilesController();
+                    $file_data = $uploader->saveFiles($record, is_array($files) ? $files : [$files]);
 
-            try {
-                $uploader = new FilesController();
-                $image_data = $uploader->saveFiles($record, [request()->file('image')]);
+                    // Tthe uploader returns an array of file data
+                    $path = $file_data[0]['path'] ?? null;
 
-                if (Schema::hasColumn($record->getTable(), 'image')) {
-                    $path = $image_data[0]['path'] ?? null;
-                    $record->image = $path;
-                    $record->save();
+                    if ($path) {
+                        $record->$field = $path;
+                        $record->save();
+                    }
                 }
-            } catch (Exception $e) {
-                Log::critical('saveModelImage error: ' . $e->getMessage());
             }
+        } catch (Exception $e) {
+            Log::critical('saveModelFiles error: ' . $e->getMessage());
         }
     }
 

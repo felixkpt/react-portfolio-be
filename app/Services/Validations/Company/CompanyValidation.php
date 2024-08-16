@@ -22,6 +22,8 @@ class CompanyValidation implements CompanyValidationInterface
             'website' => 'required|url|unique:companies,website,' . request()->id . ',id',
             'position' => 'required|string',
             'roles' => 'required|string',
+            'achievements' => 'required|string',
+            'skill_ids' => 'required|array',
             'priority' => 'nullable|numeric',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',

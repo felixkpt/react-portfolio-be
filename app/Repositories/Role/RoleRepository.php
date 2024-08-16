@@ -37,8 +37,6 @@ class RoleRepository implements RoleRepositoryInterface
             return response(['results' => $roles->get()]);
 
         $uri =  '/dashboard/settings/role-permissions/roles/';
-        $view = 'link';
-        $edit = 'modal';
         $roles = SearchRepo::of($roles, ['name', 'id'])
             ->setModelUri($uri)
             ->fillable(['name', 'guard_name'])

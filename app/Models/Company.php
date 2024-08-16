@@ -10,11 +10,12 @@ class Company extends Model
     use HasFactory, CommonModelRelationShips, ExcludeSystemFillable;
 
     protected $fillable = [
-        "name", 
+        "name",
         "slug",
         "website",
         'position',
         'roles',
+        'achievements',
         'start_date',
         'end_date',
         'priority',
@@ -28,5 +29,10 @@ class Company extends Model
     function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'company_skill')->withTimestamps();
     }
 }
