@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 
 gcp/.env_prod
+
+gcs-storage-service-account.json
