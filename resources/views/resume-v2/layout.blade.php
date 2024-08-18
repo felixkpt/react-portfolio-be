@@ -13,7 +13,6 @@
             font-size: 16px !important;
         }
 
-
         .custom-container {
             margin-bottom: 16px;
             padding: 0;
@@ -30,6 +29,7 @@
         }
 
         .resume-header .contact-link {
+            font-size: 15px;
             cursor: pointer;
             color: rgba(255, 255, 255, 0.6) !important;
         }
@@ -65,6 +65,7 @@
         }
 
         .name-title {
+            font-size: 1.5rem;
             margin: 0;
         }
 
@@ -120,8 +121,8 @@
 
         /* Force page break after the first table row set */
         .page-break {
-            page-break-after: always;
-            break-after: page;
+            page-break-after: always!important;
+            break-after: page!important;
         }
 
         .custom-progress-bar {

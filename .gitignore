@@ -17,8 +17,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/.gcs-storage-service-account.json
-
-gcp/docker/.env_production
-gcp/docker/.env_sandbox
-gcp/docker/.gcs-storage-service-account.json
+/gcs-storage-service-account.json

@@ -12,10 +12,10 @@
                         <table class="resume-table">
                             <tbody>
                                 <tr>
-                                    <td style="width: 60%;">
+                                    <td style="width: 50%;">
                                         <h3 class="name-title">{{ $about->name }}</h3>
                                     </td>
-                                    <td style="width: 40%;">
+                                    <td style="width: 50%;">
                                         @include('resume-v2.contacts')
                                     </td>
                                 </tr>
