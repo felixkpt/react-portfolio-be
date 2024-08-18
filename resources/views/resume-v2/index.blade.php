@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div style="font-size: normal;" class="container">
+    <div class="container">
         @include('resume-v2.raw')
     </div>
 @endsection

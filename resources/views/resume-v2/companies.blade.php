@@ -4,7 +4,7 @@
         <hr>
     @endif
 
-    <table class="table table-borderless table-sm m-0">
+    <table class="resume-table">
         @php
             // Define how many companies to show in the first portion
             $firstPortion = $companies->take(2);
@@ -15,7 +15,7 @@
             @foreach ($firstPortion as $company)
                 <tr>
                     <td class="pb-2">
-                        <table class="table table-borderless table-sm m-0">
+                        <table class="resume-table">
                             <tr>
                                 <td class="pt-0">
                                     <strong>
@@ -38,17 +38,16 @@
                             </tr>
                             <tr>
                                 <td class="pt-0">
-                                    <h6>Achievements:</h6>
+                                    <h6 class="resume-sub-title-sm">Achievements:</h6>
                                     {!! $company->achievements !!}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pt-0">
-                                    <h6>Technologies used:</h6>
+                                    <h6 class="resume-sub-title-sm">Technologies used:</h6>
                                     <div class="d-flex flex-wrap">
                                         @foreach ($company->skills as $skill)
-                                            <div class="card bg-dark text-white m-1 p-2 cursor-default"
-                                                style="font-size: 0.85rem; border-radius: 0.25rem; background: #434E5E!important;">
+                                            <div class="card cursor-default">
                                                 {{ $skill->name }}
                                             </div>
                                         @endforeach
@@ -63,7 +62,7 @@
             @foreach ($secondPortion as $company)
                 <tr>
                     <td class="pb-2">
-                        <table class="table table-borderless table-sm m-0">
+                        <table class="resume-table">
                             <tr>
                                 <td class="pt-0">
                                     <strong>
@@ -86,17 +85,16 @@
                             </tr>
                             <tr>
                                 <td class="pt-0">
-                                    <h6>Achievements:</h6>
+                                    <h6 class="resume-sub-title-sm">Achievements:</h6>
                                     {!! $company->achievements !!}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="pt-0">
-                                    <h6>Technologies used:</h6>
+                                    <h6 class="resume-sub-title-sm">Technologies used:</h6>
                                     <div class="d-flex flex-wrap">
                                         @foreach ($company->skills as $skill)
-                                            <div class="card bg-dark text-white m-1 p-2 cursor-default"
-                                                style="font-size: 0.85rem; border-radius: 0.25rem; background: #434E5E!important;">
+                                            <div class="companies-card cursor-default">
                                                 {{ $skill->name }}
                                             </div>
                                         @endforeach
