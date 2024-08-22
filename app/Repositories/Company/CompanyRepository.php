@@ -20,7 +20,7 @@ class CompanyRepository implements CompanyRepositoryInterface
     {
         request()->merge(['companies' => true]);
 
-        $company = $this->model::query()->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
+        $company = $this->model::query()->with(['skills'])->when(showActiveRecords(), fn($q) => $q->where('status_id', activeStatusId()));
 
         if ($this->applyFiltersOnly) return $company;
 
@@ -45,7 +45,6 @@ class CompanyRepository implements CompanyRepositoryInterface
         $res = $this->autoSave($data);
 
         if (request()->skill_ids) {
-            Log::info('Should attach', request()->skill_ids);
 
             // Detach all existing skills
             $res->skills()->detach();
