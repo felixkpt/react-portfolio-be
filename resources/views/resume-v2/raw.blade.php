@@ -65,11 +65,6 @@ function getExperiencePercentage($experienceLevel)
                             <table class="resume-table">
                                 <tr>
                                     <td>
-                                        @include('resume-v2.skills_categories', ['part' => 2])
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         @include('resume-v2.projects')
                                     </td>
                                 </tr>

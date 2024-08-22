@@ -129,8 +129,8 @@
             background-color: #ccc;
             border-radius: 4px;
             overflow: hidden;
-            height: 12px;
-            margin-top: 5px;
+            height: 10px;
+            margin-top: 3px;
         }
 
         .custom-progress {
@@ -146,8 +146,8 @@
             border-radius: 0.25rem;
             background: #434E5E;
             color: white;
-            padding: 5px 10px;
-            margin: 5px;
+            padding: 2px 4px;
+            margin: 1px;
             display: inline-block;
             cursor: default;
         }

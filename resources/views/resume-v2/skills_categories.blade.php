@@ -9,8 +9,8 @@
                         // Split the skills categories based on the part
                         $skillsToDisplay =
                             isset($part) && $part == 2
-                                ? $skills_categories->skip(2) // Skip the first 2 categories for part 2
-                                : $skills_categories->take(2); // Take the first 2 categories for part 1
+                                ? $skills_categories->skip(3) // Skip the first 2 categories for part 2
+                                : $skills_categories->take(3); // Take the first 2 categories for part 1
                     @endphp
 
                     @foreach ($skillsToDisplay as $skills_category)
